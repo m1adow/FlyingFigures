@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Shapes;
 
 namespace Figures
 {
     public abstract class Figure
     {
-        private int _dx;
-        private int _dy;
+        protected int Dx;
+        protected int Dy;
 
         public int X { get; private set; }
         public int Y { get; private set; }      
@@ -22,10 +21,10 @@ namespace Figures
 
             do
             {
-                _dx = random.Next(-5, 5);
-                _dy = random.Next(-5, 5);
+                Dx = random.Next(-5, 5);
+                Dy = random.Next(-5, 5);
             }
-            while (_dx == 0 && _dy == 0);
+            while (Dx == 0 && Dy == 0);
         }
 
         public abstract List<UIElement> Draw(List<UIElement> sides);
@@ -33,12 +32,12 @@ namespace Figures
         public virtual void Move(Point maxCoordinates)
         {
             if (X <= 0 || X >= maxCoordinates.X)
-                _dx = -1 * _dx;
+                Dx = -1 * Dx;
             if (Y <= 0 || Y >= maxCoordinates.Y)
-                _dy = -1 * _dy;
+                Dy = -1 * Dy;
 
-            X += _dx;
-            Y += _dy;
+            X += Dx;
+            Y += Dy;
         }
     }
 }
