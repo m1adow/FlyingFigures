@@ -1,12 +1,12 @@
 ﻿using Figures;
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using System.Windows.Threading;
+using Rectangle = Figures.Rectangle;
 
 namespace FlyingFigures.View
 {
@@ -15,7 +15,7 @@ namespace FlyingFigures.View
     /// </summary>
     public partial class Figures : Window
     {
-        private Dictionary<Figure, UIElement> _figures;
+        private Dictionary<Figure, List<UIElement>> _figures;
         private Random _random;
 
         public Figures()
@@ -23,7 +23,7 @@ namespace FlyingFigures.View
             InitializeComponent();
             InitializeTimer();
 
-            _figures = new Dictionary<Figure, UIElement>();
+            _figures = new Dictionary<Figure, List<UIElement>>();
             _random = new Random();
         }
 
@@ -34,16 +34,15 @@ namespace FlyingFigures.View
             int x = _random.Next(0, Convert.ToInt32(maxPoint.X));
             int y = _random.Next(0, Convert.ToInt32(maxPoint.Y));
 
-            Rectangle rectangle = new(x, y);
-            System.Windows.Shapes.Rectangle drawingRectangle = GetRectangle();
+            var drawingRectangle = GetRectangle();
+            Rectangle rectangle = new(x, y, drawingRectangle.Item2);
 
-            Canvas.SetLeft(drawingRectangle, x);
-            Canvas.SetTop(drawingRectangle, y);
+            foreach (var line in drawingRectangle.Item1)
+                figuresCanvas.Children.Add(line);
 
-            figuresCanvas.Children.Add(drawingRectangle);
             figuresTreeView.Items.Add(rectangle);
 
-            _figures.Add(rectangle, drawingRectangle);
+            _figures.Add(rectangle, drawingRectangle.Item1);
         }
 
         private void TriangleButton_Click(object sender, RoutedEventArgs e)
@@ -54,12 +53,11 @@ namespace FlyingFigures.View
             int y = _random.Next(0, Convert.ToInt32(maxPoint.Y));
 
             Triangle triangle = new(x, y);
-            System.Windows.Shapes.Polygon drawingTriangle = GetTriangle();
+            List<UIElement> drawingTriangle = GetTriangle();
 
-            Canvas.SetLeft(drawingTriangle, x);
-            Canvas.SetTop(drawingTriangle, y);
+            foreach (var line in drawingTriangle)
+                figuresCanvas.Children.Add(line);
 
-            figuresCanvas.Children.Add(drawingTriangle);
             figuresTreeView.Items.Add(triangle);
 
             _figures.Add(triangle, drawingTriangle);
@@ -73,21 +71,23 @@ namespace FlyingFigures.View
             int y = _random.Next(0, Convert.ToInt32(maxPoint.Y));
 
             Circle circle = new(x, y);
-            System.Windows.Shapes.Ellipse drawingCircle = GetCircle();
+            List<UIElement> drawingCircles = GetCircle();
 
-            figuresCanvas.Children.Add(drawingCircle);
+            foreach (var drawingCircle in drawingCircles)
+                figuresCanvas.Children.Add(drawingCircle);
+
             figuresTreeView.Items.Add(circle);
 
-            _figures.Add(circle, drawingCircle);
+            _figures.Add(circle, drawingCircles);
         }
 
         private Point FindMaxCoordinates()
         {
             Point point = figuresCanvas.PointToScreen(new Point());
 
-            Point newP = (Point)(new Point(Application.Current.MainWindow.Width, Application.Current.MainWindow.Height) - point);
+            //Point newP = (Point)(new Point(Application.Current.MainWindow.Width, Application.Current.MainWindow.Height) - point);
 
-            return newP;
+            return point;
         }
 
         private void InitializeTimer()
@@ -110,64 +110,94 @@ namespace FlyingFigures.View
             }
         }
 
-        private void MoveFigure(UIElement uIElement, int x, int y)
+        private void MoveFigure(List<UIElement> sides, int x, int y)
         {
-            Canvas.SetLeft(uIElement, x);
-            Canvas.SetTop(uIElement, y);
+            foreach (var line in sides)
+            {
+                Canvas.SetLeft(line, x);
+                Canvas.SetTop(line, y);
+            }
         }
 
-        private System.Windows.Shapes.Rectangle GetRectangle()
+        private Tuple<List<UIElement>, int> GetRectangle()
         {
             int length = _random.Next(50, 100);
 
-            System.Windows.Shapes.Rectangle rectangle = new()
+            List<UIElement> rectangle = new()
             {
-                Height = length / 2,
-                Width = length,
-                Fill = GetRandomColor(),
-                StrokeThickness = 3,
-                Stroke = Brushes.Black
+                new Line()
+                {
+                    X2 = length,
+                    Stroke = GetRandomColor()
+                },
+                new Line()
+                {
+                    X1 = 0,
+                    Y2 = length / 2,
+                    Stroke = GetRandomColor()
+                },
+                new Line()
+                {
+                    X2 = length,
+                    Y1 = length / 2,
+                    Y2 = length / 2,
+                    Stroke = GetRandomColor()
+                },
+                new Line()
+                {
+                    X1 = length,
+                    X2 = length,
+                    Y2 = length / 2,
+                    Stroke = GetRandomColor()
+                }
             };
 
-            return rectangle;
-        } 
-        
-        private System.Windows.Shapes.Polygon GetTriangle()
+            return new Tuple<List<UIElement>, int>(rectangle, length);
+        }
+
+        private List<UIElement> GetTriangle()
         {
             int length = _random.Next(50, 100);
 
-            System.Windows.Shapes.Polygon triangle = new()
+            List<UIElement> triangle = new()
             {
-                Fill = GetRandomColor(),
-                StrokeThickness = 3,
-                Stroke = Brushes.Black
-            };
-
-            triangle.Points = new PointCollection()
-            {
-                new Point(0, 0),
-                new Point(0, length),
-                new Point(length, length)
+                new Line()
+                {
+                    X2 = -1 * length / 2,
+                    Stroke = GetRandomColor()
+                },
+                new Line()
+                {
+                    Y2 = -1 * length,
+                    Stroke = GetRandomColor()
+                },
+                new Line()
+                {
+                    Y1 = -1 * length,
+                    X2 = -1 * length / 2,
+                    Stroke = GetRandomColor()
+                }
             };
 
             return triangle;
-        } 
-        
-        private System.Windows.Shapes.Ellipse GetCircle()
+        }
+
+        private List<UIElement> GetCircle()
         {
             int radius = _random.Next(50, 100);
 
-            System.Windows.Shapes.Ellipse circle = new()
+            List<UIElement> circle = new()
             {
-                Height = radius,
-                Width = radius,
-                Fill = GetRandomColor(),
-                StrokeThickness = 3,
-                Stroke = Brushes.Black
+                new System.Windows.Shapes.Ellipse()
+                {
+                    Width = radius,
+                    Height = radius,
+                    Stroke = GetRandomColor()
+                }
             };
 
             return circle;
-        } 
+        }
 
         private SolidColorBrush GetRandomColor()
         {

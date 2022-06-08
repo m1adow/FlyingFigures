@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Shapes;
 
 namespace Figures
 {
@@ -8,9 +10,9 @@ namespace Figures
         {
         }
 
-        public override UIElement Draw(UIElement uIElement)
+        public override List<UIElement> Draw(List<UIElement> sides)
         {
-            return uIElement;
+            return sides;
         }
     }
 }

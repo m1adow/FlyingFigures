@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Shapes;
 
 namespace Figures
 {
@@ -26,7 +28,7 @@ namespace Figures
             while (_dx == 0 && _dy == 0);
         }
 
-        public abstract UIElement Draw(UIElement uIElement);
+        public abstract List<UIElement> Draw(List<UIElement> sides);
 
         public virtual void Move(Point maxCoordinates)
         {
