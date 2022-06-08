@@ -1,12 +1,16 @@
-﻿using System.Drawing;
+﻿using System.Windows;
 
 namespace Figures
 {
     public class Rectangle : Figure
     {
-        /*public override void Draw(Graphics graphics)
+        public Rectangle(int x, int y) : base(x, y)
         {
-            throw new NotImplementedException();
-        }*/
+        }
+
+        public override UIElement Draw(UIElement uIElement)
+        {
+            return uIElement;
+        }
     }
 }
