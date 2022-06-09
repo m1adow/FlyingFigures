@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Shapes;
 
 namespace Figures
 {
     public class Circle : Figure
     {
-        private int _top;
-        private int _right;
+        private double _top;
+        private double _right;
 
-        public Circle(int x, int y, int radius) : base(x, y)
+        public Circle(double x, double y, double radius) : base(x, y)
         {
             _top = y + radius;
             _right = x + radius;
@@ -28,7 +27,7 @@ namespace Figures
             if (_top <= 0 || _top >= maxCoordinates.Y)
                 Dy *= -1;
 
-            _right += Dx;   
+            _right += Dx;
             _top += Dy;
 
             base.Move(maxCoordinates);

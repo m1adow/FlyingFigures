@@ -6,13 +6,13 @@ namespace Figures
 {
     public abstract class Figure
     {
-        protected int Dx;
-        protected int Dy;
+        protected double Dx;
+        protected double Dy;
 
-        public int X { get; private set; }
-        public int Y { get; private set; }      
+        public double X { get; private set; }
+        public double Y { get; private set; }
 
-        public Figure(int x, int y)
+        public Figure(double x, double y)
         {
             X = x;
             Y = y;

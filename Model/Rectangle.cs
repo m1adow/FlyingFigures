@@ -5,10 +5,10 @@ namespace Figures
 {
     public class Rectangle : Figure
     {
-        private int _xCorner;
-        private int _yCorner;
+        private double _xCorner;
+        private double _yCorner;
 
-        public Rectangle(int x, int y, int xCorner, int yCorner) : base(x, y)
+        public Rectangle(double x, double y, double xCorner, double yCorner) : base(x, y)
         {
             _xCorner = x + xCorner;
             _yCorner = y + yCorner;

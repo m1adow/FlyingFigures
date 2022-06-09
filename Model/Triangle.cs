@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Shapes;
 
 namespace Figures
 {
     public class Triangle : Figure
     {
-        private int _rightCorner;
-        private int _bottomCorner;
+        private double _rightCorner;
+        private double _bottomCorner;
 
-        public Triangle(int x, int y, int rightCorner, int bottomCorner) : base(x, y)
+        public Triangle(double x, double y, double rightCorner, double bottomCorner) : base(x, y)
         {
             _rightCorner = x + rightCorner;
             _bottomCorner = y + bottomCorner;
