@@ -10,8 +10,8 @@ namespace Figures
 
         public Rectangle(int x, int y, int xCorner, int yCorner) : base(x, y)
         {
-            _xCorner = xCorner;
-            _yCorner = yCorner;
+            _xCorner = x + xCorner;
+            _yCorner = y + yCorner;
         }
 
         public override List<UIElement> Draw(List<UIElement> sides)
@@ -22,9 +22,12 @@ namespace Figures
         public override void Move(Point maxCoordinates)
         {
             if (_xCorner <= 0 || _xCorner >= maxCoordinates.X)
-                Dx = -1 * Dx;
+                Dx *= -1;
             if (_yCorner <= 0 || _yCorner >= maxCoordinates.Y)
-                Dy = -1 * Dy;
+                Dy *= -1;
+
+            _xCorner += Dx;
+            _yCorner += Dy;
 
             base.Move(maxCoordinates);
         }

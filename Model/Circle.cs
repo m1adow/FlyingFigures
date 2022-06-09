@@ -6,11 +6,13 @@ namespace Figures
 {
     public class Circle : Figure
     {
-        private int _radius;
+        private int _top;
+        private int _right;
 
         public Circle(int x, int y, int radius) : base(x, y)
         {
-            _radius = radius;
+            _top = y + radius;
+            _right = x + radius;
         }
 
         public override List<UIElement> Draw(List<UIElement> sides)
@@ -20,15 +22,14 @@ namespace Figures
 
         public override void Move(Point maxCoordinates)
         {
-            if (_radius <= 0 || _radius >= maxCoordinates.X)
-                Dx = -1 * Dx;
-            if (_radius <= 0 || _radius >= maxCoordinates.Y)
-                Dx = -1 * Dx;
+            if (_right <= 0 || _right >= maxCoordinates.X)
+                Dx *= -1;
 
-            if (-1 * _radius <= 0 || -1 * _radius >= maxCoordinates.X)
-                Dx = -1 * Dx;
-            if (-1 * _radius <= 0 || -1 * _radius >= maxCoordinates.Y)
-                Dx = -1 * Dx;
+            if (_top <= 0 || _top >= maxCoordinates.Y)
+                Dy *= -1;
+
+            _right += Dx;   
+            _top += Dy;
 
             base.Move(maxCoordinates);
         }

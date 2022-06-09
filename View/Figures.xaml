@@ -29,13 +29,12 @@
         <TreeView Margin="5"
                   Grid.Row="1"
                   x:Name="figuresTreeView">
-            <Border BorderBrush="Black" BorderThickness="1"/>
-
+            <Label x:Name="coordinatesLabel"/>
         </TreeView>
         <Canvas Grid.RowSpan="2"
                 Grid.Column="1"
                 x:Name="figuresCanvas">
-           
+
         </Canvas>
     </Grid>
 </Window>

@@ -11,8 +11,8 @@ namespace Figures
 
         public Triangle(int x, int y, int rightCorner, int bottomCorner) : base(x, y)
         {
-            _rightCorner = rightCorner;
-            _bottomCorner = bottomCorner;
+            _rightCorner = x + rightCorner;
+            _bottomCorner = y + bottomCorner;
         }
 
         public override List<UIElement> Draw(List<UIElement> sides)
@@ -23,10 +23,13 @@ namespace Figures
         public override void Move(Point maxCoordinates)
         {
             if (_rightCorner <= 0 || _rightCorner >= maxCoordinates.X)
-                Dx = -1 * Dx;
+                Dx *= -1;
 
             if (_bottomCorner <= 0 || _bottomCorner >= maxCoordinates.Y)
-                Dy = -1 * Dy;
+                Dy *= -1;
+
+            _rightCorner += Dx;
+            _bottomCorner += Dy;
 
             base.Move(maxCoordinates);
         }

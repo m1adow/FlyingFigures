@@ -21,8 +21,8 @@ namespace Figures
 
             do
             {
-                Dx = random.Next(-5, 5);
-                Dy = random.Next(-5, 5);
+                Dx = random.Next(-3, 3);
+                Dy = random.Next(-3, 3);
             }
             while (Dx == 0 && Dy == 0);
         }
@@ -32,9 +32,9 @@ namespace Figures
         public virtual void Move(Point maxCoordinates)
         {
             if (X <= 0 || X >= maxCoordinates.X)
-                Dx = -1 * Dx;
+                Dx *= -1;
             if (Y <= 0 || Y >= maxCoordinates.Y)
-                Dy = -1 * Dy;
+                Dy *= -1;
 
             X += Dx;
             Y += Dy;
