@@ -1,7 +1,9 @@
 ﻿using Figures;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -17,7 +19,6 @@ namespace FlyingFigures.View
     public partial class Figures : Window
     {
         private Dictionary<Figure, List<UIElement>> _figures;
-        private Point _maxCoordinates;
         private Random _random;
 
         public Figures()
@@ -27,12 +28,19 @@ namespace FlyingFigures.View
             _figures = new Dictionary<Figure, List<UIElement>>();
             _random = new Random();
 
-            InitializeTimer();
+            Thread movement = new(new ThreadStart(() =>
+            {
+                InitializeTimer();
+                Dispatcher.Run();
+            }));
+            movement.Start();
         }
 
         private void RectangleButton_Click(object sender, RoutedEventArgs e)
         {
-            var rectangle = GetRectangle();
+            var rectangle = GetRectangle(GetMaxCoordinates(figuresCanvas));
+
+            MoveFigure(rectangle.Item1, rectangle.Item2.X, rectangle.Item2.Y);
 
             foreach (var line in rectangle.Item1)
                 figuresCanvas.Children.Add(line);
@@ -44,7 +52,9 @@ namespace FlyingFigures.View
 
         private void TriangleButton_Click(object sender, RoutedEventArgs e)
         {
-            var triangle = GetTriangle();
+            var triangle = GetTriangle(GetMaxCoordinates(figuresCanvas));
+
+            MoveFigure(triangle.Item1, triangle.Item2.X, triangle.Item2.Y);
 
             foreach (var line in triangle.Item1)
                 figuresCanvas.Children.Add(line);
@@ -56,7 +66,9 @@ namespace FlyingFigures.View
 
         private void CirlceButton_Click(object sender, RoutedEventArgs e)
         {
-            var circle = GetCircle();
+            var circle = GetCircle(GetMaxCoordinates(figuresCanvas));
+
+            MoveFigure(circle.Item1, circle.Item2.X, circle.Item2.Y);
 
             foreach (var drawingCircle in circle.Item1)
                 figuresCanvas.Children.Add(drawingCircle);
@@ -66,12 +78,12 @@ namespace FlyingFigures.View
             _figures.Add(circle.Item2, circle.Item1);
         }
 
-        private Point FindMaxCoordinates()
+        private Point GetMaxCoordinates(Canvas canvas)
         {
             Point point = new()
             {
-                X = figuresCanvas.ActualWidth,
-                Y = figuresCanvas.ActualHeight
+                X = canvas.ActualWidth,
+                Y = canvas.ActualHeight
             };
 
             return point;
@@ -79,7 +91,7 @@ namespace FlyingFigures.View
 
         private void InitializeTimer()
         {
-            DispatcherTimer timer = new(); 
+            DispatcherTimer timer = new();
 
             timer.Tick += Timer_Tick;
             timer.Interval = TimeSpan.FromSeconds(0.01);
@@ -88,11 +100,9 @@ namespace FlyingFigures.View
 
         private void Timer_Tick(object? sender, EventArgs e)
         {
-            _maxCoordinates = FindMaxCoordinates();
-
             foreach (var figure in _figures)
             {
-                figure.Key.Move(_maxCoordinates);
+                figure.Key.Move(GetMaxCoordinates(figuresCanvas));
                 MoveFigure(figure.Key.Draw(figure.Value), figure.Key.X, figure.Key.Y);
             }
         }
@@ -101,17 +111,21 @@ namespace FlyingFigures.View
         {
             foreach (var line in sides)
             {
-                Canvas.SetLeft(line, x);
-                Canvas.SetTop(line, y);
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                    (ThreadStart)delegate ()
+                    {
+                        Canvas.SetLeft(line, x);
+                        Canvas.SetTop(line, y);
+                    });
             }
         }
 
-        private Tuple<List<UIElement>, Rectangle> GetRectangle()
+        private Tuple<List<UIElement>, Rectangle> GetRectangle(Point maxPoint)
         {
             int length = _random.Next(50, 100);
 
-            int x = _random.Next(length, Convert.ToInt32(_maxCoordinates.X) - length);
-            int y = _random.Next(length, Convert.ToInt32(_maxCoordinates.Y) - length);
+            int x = _random.Next(length, Convert.ToInt32(maxPoint.X) - length);
+            int y = _random.Next(length, Convert.ToInt32(maxPoint.Y) - length);
 
             List<UIElement> drawingRectangle = new()
             {
@@ -147,12 +161,12 @@ namespace FlyingFigures.View
             return new Tuple<List<UIElement>, Rectangle>(drawingRectangle, rectangle);
         }
 
-        private Tuple<List<UIElement>, Triangle> GetTriangle()
+        private Tuple<List<UIElement>, Triangle> GetTriangle(Point maxPoint)
         {
             int length = _random.Next(50, 100);
 
-            int x = _random.Next(length, Convert.ToInt32(_maxCoordinates.X) - length);
-            int y = _random.Next(length, Convert.ToInt32(_maxCoordinates.Y) - length);
+            int x = _random.Next(length, Convert.ToInt32(maxPoint.X) - length);
+            int y = _random.Next(length, Convert.ToInt32(maxPoint.Y) - length);
 
             List<UIElement> drawingTriangle = new()
             {
@@ -179,12 +193,12 @@ namespace FlyingFigures.View
             return new Tuple<List<UIElement>, Triangle>(drawingTriangle, triangle);
         }
 
-        private Tuple<List<UIElement>, Circle> GetCircle()
+        private Tuple<List<UIElement>, Circle> GetCircle(Point maxPoint)
         {
             int radius = _random.Next(50, 100);
 
-            int x = _random.Next(radius, Convert.ToInt32(_maxCoordinates.X) - radius);
-            int y = _random.Next(radius, Convert.ToInt32(_maxCoordinates.Y) - radius);
+            int x = _random.Next(radius, Convert.ToInt32(maxPoint.X) - radius);
+            int y = _random.Next(radius, Convert.ToInt32(maxPoint.Y) - radius);
 
             List<UIElement> drawingCircle = new()
             {
