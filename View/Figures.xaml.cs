@@ -1,11 +1,10 @@
 ﻿using Figures;
+using FlyingFigures.Localization;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using Rectangle = Figures.Rectangle;
 
@@ -38,18 +37,12 @@ namespace FlyingFigures.View
         {
             string? name = (sender as Button)?.Content.ToString();
 
-            switch (name)
-            {
-                case "Rectangle":
-                    AddFigure(GetRectangle());
-                    break;
-                case "Triangle":
-                    AddFigure(GetTriangle());
-                    break;
-                case "Circle":
-                    AddFigure(GetCircle());
-                    break;
-            }
+            if (name == Resource.RectangleButton)
+                AddFigure(GetRectangle());
+            else if (name == Resource.TriangleButton)
+                AddFigure(GetTriangle());
+            else if (name == Resource.CircleButton)
+                AddFigure(GetCircle());
         }
 
         private void AddFigure(Figure figure)
@@ -96,7 +89,7 @@ namespace FlyingFigures.View
         }
 
         private Rectangle GetRectangle()
-        {           
+        {
             Point figureCoordinates = GetFigureCoordinates(GetMaxCoordinates(figuresCanvas));
 
             Rectangle rectangle = new(figureCoordinates.X, figureCoordinates.Y);
@@ -141,6 +134,22 @@ namespace FlyingFigures.View
             double y = _random.Next(length, Convert.ToInt32(maxPoint.Y) - length);
 
             return new Point(x, y);
-        }      
+        }
+
+        private void SwitchLanguage_Click(object sender, RoutedEventArgs e)
+        {
+            string? language = (sender as MenuItem)?.Name.ToString();
+
+            if (language == "EnglishLanguage")
+            {
+                Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en");
+                Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en");
+            }
+            else if (language == "RussianLanguage")
+            {
+                Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("ru-RU");
+                Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
+            }
+        }
     }
 }
