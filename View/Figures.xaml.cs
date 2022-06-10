@@ -34,46 +34,34 @@ namespace FlyingFigures.View
             movement.Start();
         }
 
-        private void RectangleButton_Click(object sender, RoutedEventArgs e)
+        private void CreateFigure_Click(object sender, RoutedEventArgs e)
         {
-            Rectangle rectangle = GetRectangle();
+            string? name = (sender as Button)?.Content.ToString();
 
-            MoveFigure(rectangle.Draw(), rectangle.X, rectangle.Y);
-
-            foreach (var line in rectangle.Draw())
-                figuresCanvas.Children.Add(line);
-
-            figuresTreeView.Items.Add(rectangle);
-
-            _figures.Add(rectangle);
+            switch (name)
+            {
+                case "Rectangle":
+                    AddFigure(GetRectangle());
+                    break;
+                case "Triangle":
+                    AddFigure(GetTriangle());
+                    break;
+                case "Circle":
+                    AddFigure(GetCircle());
+                    break;
+            }
         }
 
-        private void TriangleButton_Click(object sender, RoutedEventArgs e)
+        private void AddFigure(Figure figure)
         {
-            Triangle triangle = GetTriangle();
+            MoveFigure(figure.Draw(), figure.X, figure.Y);
 
-            MoveFigure(triangle.Draw(), triangle.X, triangle.Y);
-
-            foreach (var line in triangle.Draw())
+            foreach (var line in figure.Draw())
                 figuresCanvas.Children.Add(line);
 
-            figuresTreeView.Items.Add(triangle);
+            figuresTreeView.Items.Add(figure);
 
-            _figures.Add(triangle);
-        }
-
-        private void CirlceButton_Click(object sender, RoutedEventArgs e)
-        {
-            var circle = GetCircle();
-
-            MoveFigure(circle.Draw(), circle.X, circle.Y);
-
-            foreach (var drawingCircle in circle.Draw())
-                figuresCanvas.Children.Add(drawingCircle);
-
-            figuresTreeView.Items.Add(circle);
-
-            _figures.Add(circle);
+            _figures.Add(figure);
         }
 
         private void InitializeTimer()
