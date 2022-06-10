@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Figures
 {
@@ -27,7 +28,7 @@ namespace Figures
             while (Dx == 0 && Dy == 0);
         }
 
-        public abstract List<UIElement> Draw(List<UIElement> sides);
+        public abstract List<UIElement> Draw();
 
         public virtual void Move(Point maxCoordinates)
         {
@@ -38,6 +39,13 @@ namespace Figures
 
             X += Dx;
             Y += Dy;
+        }
+
+        public virtual SolidColorBrush GetRandomColor()
+        {
+            Random random = new();
+
+            return new SolidColorBrush(Color.FromRgb((byte)random.Next(1, 255), (byte)random.Next(1, 255), (byte)random.Next(1, 255)));
         }
     }
 }

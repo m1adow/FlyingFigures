@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Shapes;
 
 namespace Figures
 {
@@ -7,16 +9,23 @@ namespace Figures
     {
         private double _rightCorner;
         private double _bottomCorner;
+        private List<UIElement> _pattern;
 
-        public Triangle(double x, double y, double rightCorner, double bottomCorner) : base(x, y)
+        public Triangle(double x, double y) : base(x, y)
         {
-            _rightCorner = x + rightCorner;
-            _bottomCorner = y + bottomCorner;
+            Random random = new();
+
+            int length = random.Next(50, 100);
+
+            _pattern = GeneratePattern(length);
+
+            _rightCorner = x + length / 2;
+            _bottomCorner = y + length;
         }
 
-        public override List<UIElement> Draw(List<UIElement> sides)
-        {
-            return sides;
+        public override List<UIElement> Draw()
+        {           
+            return _pattern;
         }
 
         public override void Move(Point maxCoordinates)
@@ -31,6 +40,31 @@ namespace Figures
             _bottomCorner += Dy;
 
             base.Move(maxCoordinates);
+        }
+
+        private List<UIElement> GeneratePattern(int length)
+        {
+            List<UIElement> pattern = new()
+            {
+                new Line()
+                {
+                    X2 = length / 2,
+                    Stroke = GetRandomColor()
+                },
+                new Line()
+                {
+                    Y2 = length,
+                    Stroke = GetRandomColor()
+                },
+                new Line()
+                {
+                    Y1 = length,
+                    X2 = length / 2,
+                    Stroke = GetRandomColor()
+                }
+            };
+
+            return pattern;
         }
     }
 }

@@ -16,14 +16,14 @@ namespace FlyingFigures.View
     /// </summary>
     public partial class Figures : Window
     {
-        private Dictionary<Figure, List<UIElement>> _figures;
+        private List<Figure> _figures;
         private Random _random;
 
         public Figures()
         {
             InitializeComponent();
 
-            _figures = new Dictionary<Figure, List<UIElement>>();
+            _figures = new List<Figure>();
             _random = new Random();
 
             Thread movement = new(new ThreadStart(() =>
@@ -36,44 +36,44 @@ namespace FlyingFigures.View
 
         private void RectangleButton_Click(object sender, RoutedEventArgs e)
         {
-            var rectangle = GetRectangle();
+            Rectangle rectangle = GetRectangle();
 
-            MoveFigure(rectangle.Item1, rectangle.Item2.X, rectangle.Item2.Y);
+            MoveFigure(rectangle.Draw(), rectangle.X, rectangle.Y);
 
-            foreach (var line in rectangle.Item1)
+            foreach (var line in rectangle.Draw())
                 figuresCanvas.Children.Add(line);
 
-            figuresTreeView.Items.Add(rectangle.Item2);
+            figuresTreeView.Items.Add(rectangle);
 
-            _figures.Add(rectangle.Item2, rectangle.Item1);
+            _figures.Add(rectangle);
         }
 
         private void TriangleButton_Click(object sender, RoutedEventArgs e)
         {
-            var triangle = GetTriangle();
+            Triangle triangle = GetTriangle();
 
-            MoveFigure(triangle.Item1, triangle.Item2.X, triangle.Item2.Y);
+            MoveFigure(triangle.Draw(), triangle.X, triangle.Y);
 
-            foreach (var line in triangle.Item1)
+            foreach (var line in triangle.Draw())
                 figuresCanvas.Children.Add(line);
 
-            figuresTreeView.Items.Add(triangle.Item2);
+            figuresTreeView.Items.Add(triangle);
 
-            _figures.Add(triangle.Item2, triangle.Item1);
+            _figures.Add(triangle);
         }
 
         private void CirlceButton_Click(object sender, RoutedEventArgs e)
         {
             var circle = GetCircle();
 
-            MoveFigure(circle.Item1, circle.Item2.X, circle.Item2.Y);
+            MoveFigure(circle.Draw(), circle.X, circle.Y);
 
-            foreach (var drawingCircle in circle.Item1)
+            foreach (var drawingCircle in circle.Draw())
                 figuresCanvas.Children.Add(drawingCircle);
 
-            figuresTreeView.Items.Add(circle.Item2);
+            figuresTreeView.Items.Add(circle);
 
-            _figures.Add(circle.Item2, circle.Item1);
+            _figures.Add(circle);
         }
 
         private void InitializeTimer()
@@ -89,8 +89,8 @@ namespace FlyingFigures.View
         {
             foreach (var figure in _figures)
             {
-                figure.Key.Move(GetMaxCoordinates(figuresCanvas));
-                MoveFigure(figure.Key.Draw(figure.Value), figure.Key.X, figure.Key.Y);
+                figure.Move(GetMaxCoordinates(figuresCanvas));
+                MoveFigure(figure.Draw(), figure.X, figure.Y);
             }
         }
 
@@ -107,96 +107,31 @@ namespace FlyingFigures.View
             }
         }
 
-        private Tuple<List<UIElement>, Rectangle> GetRectangle()
-        {
-            int length = _random.Next(50, 100);
+        private Rectangle GetRectangle()
+        {           
+            Point figureCoordinates = GetFigureCoordinates(GetMaxCoordinates(figuresCanvas));
 
-            List<UIElement> drawingRectangle = new()
-            {
-                new Line()
-                {
-                    X2 = length,
-                    Stroke = GetRandomColor()
-                },
-                new Line()
-                {
-                    X1 = 0,
-                    Y2 = length / 2,
-                    Stroke = GetRandomColor()
-                },
-                new Line()
-                {
-                    X2 = length,
-                    Y1 = length / 2,
-                    Y2 = length / 2,
-                    Stroke = GetRandomColor()
-                },
-                new Line()
-                {
-                    X1 = length,
-                    X2 = length,
-                    Y2 = length / 2,
-                    Stroke = GetRandomColor()
-                }
-            };
+            Rectangle rectangle = new(figureCoordinates.X, figureCoordinates.Y);
 
-            Point figureCoordinates = GetFigureCoordinates(GetMaxCoordinates(figuresCanvas), length);
-
-            Rectangle rectangle = new(figureCoordinates.X, figureCoordinates.Y, length, length / 2);
-
-            return new Tuple<List<UIElement>, Rectangle>(drawingRectangle, rectangle);
+            return rectangle;
         }
 
-        private Tuple<List<UIElement>, Triangle> GetTriangle()
+        private Triangle GetTriangle()
         {
-            int length = _random.Next(50, 100);
+            Point figureCoordinates = GetFigureCoordinates(GetMaxCoordinates(figuresCanvas));
 
-            List<UIElement> drawingTriangle = new()
-            {
-                new Line()
-                {
-                    X2 = length / 2,
-                    Stroke = GetRandomColor()
-                },
-                new Line()
-                {
-                    Y2 = length,
-                    Stroke = GetRandomColor()
-                },
-                new Line()
-                {
-                    Y1 = length,
-                    X2 = length / 2,
-                    Stroke = GetRandomColor()
-                }
-            };
+            Triangle triangle = new(figureCoordinates.X, figureCoordinates.Y);
 
-            Point figureCoordinates = GetFigureCoordinates(GetMaxCoordinates(figuresCanvas), length);
-
-            Triangle triangle = new(figureCoordinates.X, figureCoordinates.Y, length / 2, length);
-
-            return new Tuple<List<UIElement>, Triangle>(drawingTriangle, triangle);
+            return triangle;
         }
 
-        private Tuple<List<UIElement>, Circle> GetCircle()
+        private Circle GetCircle()
         {
-            int radius = _random.Next(50, 100);
+            Point figureCoordinates = GetFigureCoordinates(GetMaxCoordinates(figuresCanvas));
 
-            List<UIElement> drawingCircle = new()
-            {
-                new System.Windows.Shapes.Ellipse()
-                {
-                    Width = radius,
-                    Height = radius,
-                    Stroke = GetRandomColor()
-                }
-            };
+            Circle circle = new(figureCoordinates.X, figureCoordinates.Y);
 
-            Point figureCoordinates = GetFigureCoordinates(GetMaxCoordinates(figuresCanvas), radius);
-
-            Circle circle = new(figureCoordinates.X, figureCoordinates.Y, radius);
-
-            return new Tuple<List<UIElement>, Circle>(drawingCircle, circle);
+            return circle;
         }
 
         private Point GetMaxCoordinates(Canvas canvas)
@@ -210,17 +145,14 @@ namespace FlyingFigures.View
             return point;
         }
 
-        private Point GetFigureCoordinates(Point maxPoint, int length)
+        private Point GetFigureCoordinates(Point maxPoint)
         {
+            int length = 100; //max length of side
+
             double x = _random.Next(length, Convert.ToInt32(maxPoint.X) - length);
             double y = _random.Next(length, Convert.ToInt32(maxPoint.Y) - length);
 
             return new Point(x, y);
-        }
-
-        private SolidColorBrush GetRandomColor()
-        {
-            return new SolidColorBrush(Color.FromRgb((byte)_random.Next(1, 255), (byte)_random.Next(1, 255), (byte)_random.Next(1, 255)));
-        }
+        }      
     }
 }
