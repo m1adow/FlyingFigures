@@ -22,14 +22,14 @@ namespace FlyingFigures.Localization {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Resource {
+    public class Resource1 {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resource() {
+        internal Resource1() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace FlyingFigures.Localization {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FlyingFigures.Localization.Resource", typeof(Resource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FlyingFigures.Localization.Resource1", typeof(Resource1).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,16 +61,7 @@ namespace FlyingFigures.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Circle.
-        /// </summary>
-        public static string Circle {
-            get {
-                return ResourceManager.GetString("Circle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Circle.
+        ///   Looks up a localized string similar to Круг.
         /// </summary>
         public static string CircleButton {
             get {
@@ -79,7 +70,7 @@ namespace FlyingFigures.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to English.
+        ///   Looks up a localized string similar to Английский.
         /// </summary>
         public static string EnglishLanguage {
             get {
@@ -88,16 +79,7 @@ namespace FlyingFigures.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Figures.
-        /// </summary>
-        public static string Figures {
-            get {
-                return ResourceManager.GetString("Figures", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Language.
+        ///   Looks up a localized string similar to Язык.
         /// </summary>
         public static string LanguageMenuItem {
             get {
@@ -106,16 +88,7 @@ namespace FlyingFigures.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rectangle.
-        /// </summary>
-        public static string Rectangle {
-            get {
-                return ResourceManager.GetString("Rectangle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Rectangle.
+        ///   Looks up a localized string similar to Прямоугольник.
         /// </summary>
         public static string RectangleButton {
             get {
@@ -124,7 +97,7 @@ namespace FlyingFigures.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Russian.
+        ///   Looks up a localized string similar to Русский.
         /// </summary>
         public static string RussianLanguage {
             get {
@@ -133,16 +106,7 @@ namespace FlyingFigures.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Triangle.
-        /// </summary>
-        public static string Triangle {
-            get {
-                return ResourceManager.GetString("Triangle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Triangle.
+        ///   Looks up a localized string similar to Треугольник.
         /// </summary>
         public static string TriangleButton {
             get {
@@ -151,7 +115,7 @@ namespace FlyingFigures.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to View.
+        ///   Looks up a localized string similar to Вид.
         /// </summary>
         public static string ViewMenuItem {
             get {

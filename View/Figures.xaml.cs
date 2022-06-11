@@ -37,11 +37,11 @@ namespace FlyingFigures.View
         {
             string? name = (sender as Button)?.Content.ToString();
 
-            if (name == Resource.RectangleButton)
+            if (name == Resource_en.RectangleButton)
                 AddFigure(GetRectangle());
-            else if (name == Resource.TriangleButton)
+            else if (name == Resource_en.TriangleButton)
                 AddFigure(GetTriangle());
-            else if (name == Resource.CircleButton)
+            else if (name == Resource_en.CircleButton)
                 AddFigure(GetCircle());
         }
 
@@ -134,22 +134,6 @@ namespace FlyingFigures.View
             double y = _random.Next(length, Convert.ToInt32(maxPoint.Y) - length);
 
             return new Point(x, y);
-        }
-
-        private void SwitchLanguage_Click(object sender, RoutedEventArgs e)
-        {
-            string? language = (sender as MenuItem)?.Name.ToString();
-
-            if (language == "EnglishLanguage")
-            {
-                Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en");
-                Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en");
-            }
-            else if (language == "RussianLanguage")
-            {
-                Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("ru-RU");
-                Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
-            }
         }
     }
 }
