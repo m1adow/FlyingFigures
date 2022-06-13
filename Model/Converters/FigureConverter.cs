@@ -22,7 +22,6 @@ namespace FlyingFigures.Model.Converter
                     default:
                         throw new JsonException("'Type' doesn't match a known derived type");
                 }
-
             }
         }
 

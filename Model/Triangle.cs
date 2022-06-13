@@ -15,11 +15,7 @@ namespace Figures
 
         public Triangle()
         {
-            Random random = new();
 
-            int length = random.Next(50, 100);
-
-            Pattern = GeneratePattern(length);
         }
 
         public Triangle(double x, double y) : base(x, y)
@@ -28,14 +24,22 @@ namespace Figures
 
             int length = random.Next(50, 100);
 
-            Pattern = GeneratePattern(length);
 
             RightCorner = x + length / 2;
             BottomCorner = y + length;
         }
 
         public override List<UIElement> Draw()
-        {           
+        {
+            if (Pattern is null)
+            {
+                Random random = new();
+
+                int length = random.Next(50, 100);
+
+                Pattern = GeneratePattern(length);
+            }
+
             return Pattern;
         }
 

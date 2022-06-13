@@ -14,11 +14,7 @@ namespace Figures
 
         public Circle()
         {
-            Random random = new();
 
-            int radius = random.Next(50, 100);
-
-            Pattern = GeneratePattern(radius);
         }
 
         public Circle(double x, double y) : base(x, y)
@@ -27,14 +23,21 @@ namespace Figures
 
             int radius = random.Next(50, 100);
 
-            Pattern = GeneratePattern(radius);
-
             Top = y + radius;
             Right = x + radius;
         }
 
         public override List<UIElement> Draw()
         {
+            if (Pattern is null)
+            {
+                Random random = new();
+
+                int radius = random.Next(50, 100);
+
+                Pattern = GeneratePattern(radius);
+            }
+
             return Pattern;
         }
 

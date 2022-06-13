@@ -191,8 +191,7 @@ namespace FlyingFigures.View
             {
                 var binaryFormatter = new BinaryFormatter();
 
-                foreach (var figure in _figures)
-                    binaryFormatter.Serialize(stream, figure);
+                binaryFormatter.Serialize(stream, _figures);
             }
         }
 
@@ -253,6 +252,14 @@ namespace FlyingFigures.View
 
         private void DeserializeInBytes(string path)
         {
+            using (var stream = File.OpenRead(path))
+            {
+                var binaryFormatter = new BinaryFormatter();
+
+                _figures = (List<Figure>)binaryFormatter.Deserialize(stream);
+            }
+
+            AddFiguresAfterDeserialization();
         }
 
         private OpenFileDialog OpenFileDialog()
