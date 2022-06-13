@@ -7,12 +7,18 @@ namespace Figures
     [Serializable]
     public class Circle : Figure
     {
-        private double _top;
-        private double _right;
+        public double Top { get; set; }
+        public double Right { get; set; }
+
+        public override string Type { get; set; } = nameof(Circle);
 
         public Circle()
         {
+            Random random = new();
 
+            int radius = random.Next(50, 100);
+
+            Pattern = GeneratePattern(radius);
         }
 
         public Circle(double x, double y) : base(x, y)
@@ -23,8 +29,8 @@ namespace Figures
 
             Pattern = GeneratePattern(radius);
 
-            _top = y + radius;
-            _right = x + radius;
+            Top = y + radius;
+            Right = x + radius;
         }
 
         public override List<UIElement> Draw()
@@ -34,14 +40,14 @@ namespace Figures
 
         public override void Move(Point maxCoordinates)
         {
-            if (_right <= 0 || _right >= maxCoordinates.X)
+            if (Right <= 0 || Right >= maxCoordinates.X)
                 Dx *= -1;
 
-            if (_top <= 0 || _top >= maxCoordinates.Y)
+            if (Top <= 0 || Top >= maxCoordinates.Y)
                 Dy *= -1;
 
-            _right += Dx;
-            _top += Dy;
+            Right += Dx;
+            Top += Dy;
 
             base.Move(maxCoordinates);
         }

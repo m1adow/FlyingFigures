@@ -1,12 +1,12 @@
 ﻿using Figures;
 using FlyingFigures.Localization;
-using FlyingFigures.ViewModel;
 using Microsoft.Win32;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text.Json;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -162,10 +162,15 @@ namespace FlyingFigures.View
 
         private void SerializeInJson(string format)
         {
-            string json = JsonConvert.SerializeObject(_figures);
+            string json = JsonSerializer.Serialize((object)_figures, new JsonSerializerOptions()
+            {
+                WriteIndented = true,
+            });
 
             var saveFileDialog = OpenSaveFileDialog(format);
-            File.WriteAllText(saveFileDialog.FileName, json);
+
+            using (var writer = new StreamWriter(saveFileDialog.FileName))
+                writer.Write(json);
         }
 
         private void SerializeInXml(string format)
@@ -202,6 +207,81 @@ namespace FlyingFigures.View
             saveFileDialog.ShowDialog();
 
             return saveFileDialog;
+        }
+
+        private void LoadFigures_Click(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = OpenFileDialog();
+
+            string format = Path.GetExtension(openFileDialog.FileName).Replace(".", "");
+
+            ClearFigures();
+
+            switch (format.ToUpper())
+            {
+                case "JSON":
+                    DeserializeInJson(openFileDialog.FileName);
+                    break;
+                case "XML":
+                    DeserializeInXml(openFileDialog.FileName);
+                    break;
+                case "BIN":
+                    DeserializeInBytes(openFileDialog.FileName);
+                    break;
+            }
+        }
+
+        private void DeserializeInJson(string path)
+        {
+            using (var reader = new StreamReader(path))
+            {
+                string json = reader.ReadToEnd();
+
+                _figures = JsonSerializer.Deserialize<List<Figure>>(json);               
+            }
+
+            AddFiguresAfterDeserialization();
+        }
+
+        private void DeserializeInXml(string path)
+        {
+            XmlSerializer serializer = new(typeof(List<Figure>));
+
+            using (var reader = new StreamReader(path))
+                serializer.Deserialize(reader);
+        }
+
+        private void DeserializeInBytes(string path)
+        {
+        }
+
+        private OpenFileDialog OpenFileDialog()
+        {
+            OpenFileDialog openFileDialog = new();
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop); // Default directory
+            openFileDialog.Filter = $"Flying Figures formats (*.json; *.bin; *.xml)|*.json;*.bin;*.xml"; // Filter files by extension
+
+            openFileDialog.ShowDialog();
+
+            return openFileDialog;
+        }
+
+        private void ClearFigures()
+        {
+            _figures.Clear();
+            figuresTreeView.Items.Clear();
+            figuresCanvas.Children.Clear();
+        }
+
+        private void AddFiguresAfterDeserialization()
+        {
+            foreach (var figure in _figures)
+            {
+                foreach (var line in figure.Draw())
+                    figuresCanvas.Children.Add(line);
+
+                figuresTreeView.Items.Add(figure);
+            }           
         }
     }
 }

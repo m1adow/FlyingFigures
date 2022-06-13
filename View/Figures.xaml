@@ -35,7 +35,8 @@
                                       Click="SaveFigures_Click"/>
                         </MenuItem>
                     </MenuItem>
-                    <MenuItem Header="{Binding Translator.LoadMenuItem}"/>
+                    <MenuItem Header="{Binding Translator.LoadMenuItem}"
+                              Click="LoadFigures_Click"/>
                 </MenuItem>
                 <MenuItem Header="{Binding Translator.ViewMenuItem}">
                     <MenuItem Header="{Binding Translator.LanguageMenuItem}">

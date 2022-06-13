@@ -8,12 +8,18 @@ namespace Figures
     [Serializable]
     public class Rectangle : Figure
     {
-        private double _xCorner;
-        private double _yCorner;
+        public double XCorner { get; set; }
+        public double YCorner { get; set; }
+
+        public override string Type { get; set; } = nameof(Rectangle);
 
         public Rectangle()
         {
+            Random random = new();
 
+            int length = random.Next(50, 100);
+
+            Pattern = GeneratePattern(length);
         }
 
         public Rectangle(double x, double y) : base(x, y)
@@ -24,8 +30,8 @@ namespace Figures
 
             Pattern = GeneratePattern(length);
 
-            _xCorner = x + length;
-            _yCorner = y + length / 2;          
+            XCorner = x + length;
+            YCorner = y + length / 2;          
         }
 
         public override List<UIElement> Draw()
@@ -35,13 +41,13 @@ namespace Figures
 
         public override void Move(Point maxCoordinates)
         {
-            if (_xCorner <= 0 || _xCorner >= maxCoordinates.X)
+            if (XCorner <= 0 || XCorner >= maxCoordinates.X)
                 Dx *= -1;
-            if (_yCorner <= 0 || _yCorner >= maxCoordinates.Y)
+            if (YCorner <= 0 || YCorner >= maxCoordinates.Y)
                 Dy *= -1;
 
-            _xCorner += Dx;
-            _yCorner += Dy;
+            XCorner += Dx;
+            YCorner += Dy;
 
             base.Move(maxCoordinates);
         }

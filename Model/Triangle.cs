@@ -8,12 +8,18 @@ namespace Figures
     [Serializable]
     public class Triangle : Figure
     {
-        private double _rightCorner;
-        private double _bottomCorner;
+        public double RightCorner { get; set; }
+        public double BottomCorner { get; set; }
+
+        public override string Type { get; set; } = nameof(Triangle);
 
         public Triangle()
         {
+            Random random = new();
 
+            int length = random.Next(50, 100);
+
+            Pattern = GeneratePattern(length);
         }
 
         public Triangle(double x, double y) : base(x, y)
@@ -24,8 +30,8 @@ namespace Figures
 
             Pattern = GeneratePattern(length);
 
-            _rightCorner = x + length / 2;
-            _bottomCorner = y + length;
+            RightCorner = x + length / 2;
+            BottomCorner = y + length;
         }
 
         public override List<UIElement> Draw()
@@ -35,14 +41,14 @@ namespace Figures
 
         public override void Move(Point maxCoordinates)
         {
-            if (_rightCorner <= 0 || _rightCorner >= maxCoordinates.X)
+            if (RightCorner <= 0 || RightCorner >= maxCoordinates.X)
                 Dx *= -1;
 
-            if (_bottomCorner <= 0 || _bottomCorner >= maxCoordinates.Y)
+            if (BottomCorner <= 0 || BottomCorner >= maxCoordinates.Y)
                 Dy *= -1;
 
-            _rightCorner += Dx;
-            _bottomCorner += Dy;
+            RightCorner += Dx;
+            BottomCorner += Dy;
 
             base.Move(maxCoordinates);
         }

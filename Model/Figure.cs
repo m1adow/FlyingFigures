@@ -1,5 +1,7 @@
-﻿using System;
+﻿using FlyingFigures.Model.Converter;
+using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Media;
 using System.Xml.Serialization;
@@ -10,10 +12,13 @@ namespace Figures
     [XmlInclude(typeof(Rectangle))]
     [XmlInclude(typeof(Triangle))]
     [XmlInclude(typeof(Circle))]
+    [JsonConverter(typeof(FigureConverter))]
     public abstract class Figure
     {
         [NonSerialized]
         protected List<UIElement>? Pattern;
+
+        public abstract string Type { get; set; }
 
         public double X { get; set; }
         public double Y { get; set; }
