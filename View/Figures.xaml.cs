@@ -247,7 +247,9 @@ namespace FlyingFigures.View
             XmlSerializer serializer = new(typeof(List<Figure>));
 
             using (var reader = new StreamReader(path))
-                serializer.Deserialize(reader);
+                _figures = (List<Figure>)serializer.Deserialize(reader);
+
+            AddFiguresAfterDeserialization();
         }
 
         private void DeserializeInBytes(string path)
