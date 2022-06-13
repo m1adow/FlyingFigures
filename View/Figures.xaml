@@ -7,7 +7,8 @@
         xmlns:rs="clr-namespace:FlyingFigures.Localization"
         xmlns:vm="clr-namespace:FlyingFigures.ViewModel"
         mc:Ignorable="d"
-        Title="Figures" Height="450" Width="800">
+        DataContext="{DynamicResource translator}"
+        Title="{Binding Title}" Height="450" Width="800">
     <Window.Resources>
         <vm:Translator x:Key="translator"/>
     </Window.Resources>
@@ -23,12 +24,22 @@
                 <RowDefinition Height="3*"/>
             </Grid.RowDefinitions>
             <Menu Margin="10,0,10,0">
-                <MenuItem Name="ViewMenuItem" Header="{Binding ViewMenuItem}">
-                    <MenuItem x:Name="LanguageMenuItem" Header="{Binding LanguageMenuItem}">
-                        <MenuItem Name="EnglishLanguage" Header="{Binding EnglishLanguage}"
+                <MenuItem Header="{Binding FileMenuItem}">
+                    <MenuItem Header="{Binding SaveMenuItem}">
+                        <MenuItem Header="{Binding FormatMenuItem}">
+                            <MenuItem Header="JSON"/>
+                            <MenuItem Header="XML"/>
+                            <MenuItem Header="BIT"/>
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="{Binding LoadMenuItem}"/>
+                </MenuItem>
+                <MenuItem Header="{Binding ViewMenuItem}">
+                    <MenuItem Header="{Binding LanguageMenuItem}">
+                        <MenuItem Header="{Binding EnglishLanguage}"
                                   Command="{Binding ChangeCultureInfoCommand}"
                                   CommandParameter="en"/>
-                        <MenuItem Name="RussianLanguage" Header="{Binding RussianLanguage}"
+                        <MenuItem Header="{Binding RussianLanguage}"
                                   Command="{Binding ChangeCultureInfoCommand}"
                                   CommandParameter="ru-RU"/>
                     </MenuItem>
@@ -36,13 +47,13 @@
             </Menu>
             <StackPanel Grid.Row="1"
                         Margin="10,0,10,0">
-                <Button Name="RectangleButton" Content="{Binding RectangleButton}"
+                <Button Content="{Binding RectangleButton}"
                         Margin="0,10,0,0"
                         Click="CreateFigure_Click"/>
-                <Button Name="TriangleButton" Content="{Binding TriangleButton}"
+                <Button Content="{Binding TriangleButton}"
                         Margin="0,10,0,0"
                         Click="CreateFigure_Click"/>
-                <Button Name="CircleButton" Content="{Binding CircleButton}"
+                <Button Content="{Binding CircleButton}"
                         Margin="0,10,0,0"
                         Click="CreateFigure_Click"/>
             </StackPanel>

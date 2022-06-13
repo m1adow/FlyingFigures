@@ -79,11 +79,38 @@ namespace FlyingFigures.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Файл.
+        /// </summary>
+        public static string FileMenuItem {
+            get {
+                return ResourceManager.GetString("FileMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Формат.
+        /// </summary>
+        public static string FormatMenuItem {
+            get {
+                return ResourceManager.GetString("FormatMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Язык.
         /// </summary>
         public static string LanguageMenuItem {
             get {
                 return ResourceManager.GetString("LanguageMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Загрузить.
+        /// </summary>
+        public static string LoadMenuItem {
+            get {
+                return ResourceManager.GetString("LoadMenuItem", resourceCulture);
             }
         }
         
@@ -102,6 +129,24 @@ namespace FlyingFigures.Localization {
         public static string RussianLanguage {
             get {
                 return ResourceManager.GetString("RussianLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сохранить.
+        /// </summary>
+        public static string SaveMenuItem {
+            get {
+                return ResourceManager.GetString("SaveMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Фигуры.
+        /// </summary>
+        public static string Title {
+            get {
+                return ResourceManager.GetString("Title", resourceCulture);
             }
         }
         

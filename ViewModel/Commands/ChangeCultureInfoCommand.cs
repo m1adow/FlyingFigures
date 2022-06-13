@@ -21,6 +21,8 @@ namespace FlyingFigures.ViewModel.Commands
 
         public bool CanExecute(object? parameter)
         {
+            if (parameter.ToString() == Translator.Language)
+                return false;
             return true;
         }
 

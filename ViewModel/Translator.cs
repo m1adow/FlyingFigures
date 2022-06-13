@@ -19,6 +19,66 @@ namespace FlyingFigures.ViewModel
             }
         }
 
+        private string? _title;
+
+        public string? Title
+        {
+            get => _title;
+            set
+            {
+                _title = value;
+                OnPropertyChanged(nameof(Title));
+            }
+        }
+
+        private string? _fileMenuItem;
+
+        public string? FileMenuItem
+        {
+            get => _fileMenuItem;
+            set
+            {
+                _fileMenuItem = value;
+                OnPropertyChanged(nameof(FileMenuItem));
+            }
+        }
+
+        private string? _saveMenuItem;
+
+        public string? SaveMenuItem
+        {
+            get => _saveMenuItem;
+            set
+            {
+                _saveMenuItem = value;
+                OnPropertyChanged(nameof(SaveMenuItem));
+            }
+        }
+        
+        private string? _loadMenuItem;
+
+        public string? LoadMenuItem
+        {
+            get => _loadMenuItem;
+            set
+            {
+                _loadMenuItem = value;
+                OnPropertyChanged(nameof(LoadMenuItem));
+            }
+        }
+
+        private string? _formatMenuItem;
+
+        public string? FormatMenuItem
+        {
+            get => _formatMenuItem;
+            set
+            {
+                _formatMenuItem = value;
+                OnPropertyChanged(nameof(FormatMenuItem));
+            }
+        }
+
         private string? _viewMenuItem;
 
         public string? ViewMenuItem
@@ -128,6 +188,11 @@ namespace FlyingFigures.ViewModel
         {
             if (Language == "ru-RU")
             {
+                Title = Resource1.Title;
+                FileMenuItem = Resource1.FileMenuItem;
+                SaveMenuItem = Resource1.SaveMenuItem;
+                LoadMenuItem = Resource1.LoadMenuItem;
+                FormatMenuItem = Resource1.FormatMenuItem;
                 ViewMenuItem = Resource1.ViewMenuItem;
                 LanguageMenuItem = Resource1.LanguageMenuItem;
                 EnglishLanguage = Resource1.EnglishLanguage;
@@ -138,13 +203,18 @@ namespace FlyingFigures.ViewModel
             }
             else if (Language == "en")
             {
-                ViewMenuItem = Resource_en.ViewMenuItem;
-                LanguageMenuItem = Resource_en.LanguageMenuItem;
-                EnglishLanguage = Resource_en.EnglishLanguage;
-                RussianLanguage = Resource_en.RussianLanguage;
-                RectangleButton = Resource_en.RectangleButton;
-                TriangleButton = Resource_en.TriangleButton;
-                CircleButton = Resource_en.CircleButton;
+                Title = Resource.Title;
+                FileMenuItem = Resource.FileMenuItem;
+                ViewMenuItem = Resource.ViewMenuItem;
+                SaveMenuItem = Resource.SaveMenuItem;
+                LoadMenuItem = Resource.LoadMenuItem;
+                FormatMenuItem = Resource.FormatMenuItem;
+                LanguageMenuItem = Resource.LanguageMenuItem;
+                EnglishLanguage = Resource.EnglishLanguage;
+                RussianLanguage = Resource.RussianLanguage;
+                RectangleButton = Resource.RectangleButton;
+                TriangleButton = Resource.TriangleButton;
+                CircleButton = Resource.CircleButton;
             }
         }
     }

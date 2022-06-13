@@ -37,11 +37,11 @@ namespace FlyingFigures.View
         {
             string? name = (sender as Button)?.Content.ToString();
 
-            if (name == Resource_en.RectangleButton)
+            if (name == Resource.RectangleButton)
                 AddFigure(GetRectangle());
-            else if (name == Resource_en.TriangleButton)
+            else if (name == Resource.TriangleButton)
                 AddFigure(GetTriangle());
-            else if (name == Resource_en.CircleButton)
+            else if (name == Resource.CircleButton)
                 AddFigure(GetCircle());
         }
 
