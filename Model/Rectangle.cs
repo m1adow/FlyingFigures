@@ -5,11 +5,16 @@ using System.Windows.Shapes;
 
 namespace Figures
 {
+    [Serializable]
     public class Rectangle : Figure
     {
         private double _xCorner;
         private double _yCorner;
-        private List<UIElement> _pattern;
+
+        public Rectangle()
+        {
+
+        }
 
         public Rectangle(double x, double y) : base(x, y)
         {
@@ -17,7 +22,7 @@ namespace Figures
 
             int length = random.Next(50, 100);
 
-            _pattern = GeneratePattern(length);
+            Pattern = GeneratePattern(length);
 
             _xCorner = x + length;
             _yCorner = y + length / 2;          
@@ -25,7 +30,7 @@ namespace Figures
 
         public override List<UIElement> Draw()
         {            
-            return _pattern;
+            return Pattern;
         }
 
         public override void Move(Point maxCoordinates)

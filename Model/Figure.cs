@@ -2,16 +2,29 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
+using System.Xml.Serialization;
 
 namespace Figures
 {
+    [Serializable]
+    [XmlInclude(typeof(Rectangle))]
+    [XmlInclude(typeof(Triangle))]
+    [XmlInclude(typeof(Circle))]
     public abstract class Figure
     {
-        protected double Dx;
-        protected double Dy;
+        [NonSerialized]
+        protected List<UIElement>? Pattern;
 
-        public double X { get; private set; }
-        public double Y { get; private set; }
+        public double X { get; set; }
+        public double Y { get; set; }
+
+        public double Dx { get; set; }
+        public double Dy { get; set; }
+       
+        public Figure()
+        {
+
+        }
 
         public Figure(double x, double y)
         {

@@ -1,5 +1,5 @@
-﻿using System;
-using System.Windows.Controls;
+﻿using FlyingFigures.ViewModel.Helpers;
+using System;
 using System.Windows.Input;
 
 namespace FlyingFigures.ViewModel.Commands

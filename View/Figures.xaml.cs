@@ -1,11 +1,17 @@
 ﻿using Figures;
 using FlyingFigures.Localization;
+using FlyingFigures.ViewModel;
+using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using System.Xml.Serialization;
 using Rectangle = Figures.Rectangle;
 
 namespace FlyingFigures.View
@@ -134,6 +140,68 @@ namespace FlyingFigures.View
             double y = _random.Next(length, Convert.ToInt32(maxPoint.Y) - length);
 
             return new Point(x, y);
+        }
+
+        private void SaveFigures_Click(object sender, RoutedEventArgs e)
+        {
+            string? format = (sender as MenuItem)?.Header.ToString();
+
+            switch (format)
+            {
+                case "JSON":
+                    SerializeInJson(format.ToLower());
+                    break;
+                case "XML":
+                    SerializeInXml(format.ToLower());
+                    break;
+                case "BIN":
+                    SerializeInBytes(format.ToLower());
+                    break;
+            }
+        }
+
+        private void SerializeInJson(string format)
+        {
+            string json = JsonConvert.SerializeObject(_figures);
+
+            var saveFileDialog = OpenSaveFileDialog(format);
+            File.WriteAllText(saveFileDialog.FileName, json);
+        }
+
+        private void SerializeInXml(string format)
+        {
+            var saveFileDialog = OpenSaveFileDialog(format);
+
+            XmlSerializer serializer = new(typeof(List<Figure>));
+
+            using (var writer = new StreamWriter(saveFileDialog.FileName))
+                serializer.Serialize(writer, _figures);
+        }
+
+        private void SerializeInBytes(string format)
+        {
+            var saveFileDialog = OpenSaveFileDialog(format);
+
+            using (var stream = File.Open(saveFileDialog.FileName, FileMode.Create))
+            {
+                var binaryFormatter = new BinaryFormatter();
+
+                foreach (var figure in _figures)
+                    binaryFormatter.Serialize(stream, figure);
+            }
+        }
+
+        private SaveFileDialog OpenSaveFileDialog(string format)
+        {
+            SaveFileDialog saveFileDialog = new();
+            saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop); // Default directory
+            saveFileDialog.FileName = "FlyingFigures"; // Default file name
+            saveFileDialog.DefaultExt = $".{format}"; // Default file extension
+            saveFileDialog.Filter = $"{format.ToUpper()} (.{format})|*.{format}"; // Filter files by extension
+
+            saveFileDialog.ShowDialog();
+
+            return saveFileDialog;
         }
     }
 }

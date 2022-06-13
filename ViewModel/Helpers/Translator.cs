@@ -1,9 +1,8 @@
 ﻿using FlyingFigures.Localization;
 using FlyingFigures.ViewModel.Commands;
 using System.ComponentModel;
-using System.Globalization;
 
-namespace FlyingFigures.ViewModel
+namespace FlyingFigures.ViewModel.Helpers
 {
     public class Translator : INotifyPropertyChanged
     {
@@ -54,7 +53,7 @@ namespace FlyingFigures.ViewModel
                 OnPropertyChanged(nameof(SaveMenuItem));
             }
         }
-        
+
         private string? _loadMenuItem;
 
         public string? LoadMenuItem
@@ -141,9 +140,9 @@ namespace FlyingFigures.ViewModel
 
         private string? _triangleButton;
 
-        public string? TriangleButton 
-        { 
-            get => _triangleButton; 
+        public string? TriangleButton
+        {
+            get => _triangleButton;
             set
             {
                 _triangleButton = value;
@@ -153,18 +152,18 @@ namespace FlyingFigures.ViewModel
 
         private string? _circleButton;
 
-        public string? CircleButton 
-        { 
-            get => _circleButton; 
+        public string? CircleButton
+        {
+            get => _circleButton;
             set
             {
                 _circleButton = value;
                 OnPropertyChanged(nameof(CircleButton));
-            } 
+            }
         }
 
         public ChangeCultureInfoCommand? ChangeCultureInfoCommand { get; set; }
-      
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public Translator()

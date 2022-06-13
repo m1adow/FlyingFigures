@@ -5,11 +5,16 @@ using System.Windows.Shapes;
 
 namespace Figures
 {
+    [Serializable]
     public class Triangle : Figure
     {
         private double _rightCorner;
         private double _bottomCorner;
-        private List<UIElement> _pattern;
+
+        public Triangle()
+        {
+
+        }
 
         public Triangle(double x, double y) : base(x, y)
         {
@@ -17,7 +22,7 @@ namespace Figures
 
             int length = random.Next(50, 100);
 
-            _pattern = GeneratePattern(length);
+            Pattern = GeneratePattern(length);
 
             _rightCorner = x + length / 2;
             _bottomCorner = y + length;
@@ -25,7 +30,7 @@ namespace Figures
 
         public override List<UIElement> Draw()
         {           
-            return _pattern;
+            return Pattern;
         }
 
         public override void Move(Point maxCoordinates)

@@ -4,11 +4,16 @@ using System.Windows;
 
 namespace Figures
 {
+    [Serializable]
     public class Circle : Figure
     {
         private double _top;
         private double _right;
-        private List<UIElement> _pattern;
+
+        public Circle()
+        {
+
+        }
 
         public Circle(double x, double y) : base(x, y)
         {
@@ -16,7 +21,7 @@ namespace Figures
 
             int radius = random.Next(50, 100);
 
-            _pattern = GeneratePattern(radius);
+            Pattern = GeneratePattern(radius);
 
             _top = y + radius;
             _right = x + radius;
@@ -24,7 +29,7 @@ namespace Figures
 
         public override List<UIElement> Draw()
         {
-            return _pattern;
+            return Pattern;
         }
 
         public override void Move(Point maxCoordinates)
