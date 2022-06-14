@@ -43,11 +43,11 @@ namespace FlyingFigures.View
         {
             string? name = (sender as Button)?.Content.ToString();
 
-            if (name == Resource.RectangleButton)
+            if (name == Resource.RectangleButton || name == Resource1.RectangleButton)
                 AddFigure(GetRectangle());
-            else if (name == Resource.TriangleButton)
+            else if (name == Resource.TriangleButton || name == Resource1.TriangleButton)
                 AddFigure(GetTriangle());
-            else if (name == Resource.CircleButton)
+            else if (name == Resource.CircleButton || name == Resource1.CircleButton)
                 AddFigure(GetCircle());
         }
 
@@ -96,7 +96,7 @@ namespace FlyingFigures.View
 
         private Rectangle GetRectangle()
         {
-            Point figureCoordinates = GetFigureCoordinates(GetMaxCoordinates(figuresCanvas));
+            Point figureCoordinates = GetSpawnCoordinates();
 
             Rectangle rectangle = new(figureCoordinates.X, figureCoordinates.Y);
 
@@ -105,7 +105,7 @@ namespace FlyingFigures.View
 
         private Triangle GetTriangle()
         {
-            Point figureCoordinates = GetFigureCoordinates(GetMaxCoordinates(figuresCanvas));
+            Point figureCoordinates = GetSpawnCoordinates();
 
             Triangle triangle = new(figureCoordinates.X, figureCoordinates.Y);
 
@@ -114,7 +114,7 @@ namespace FlyingFigures.View
 
         private Circle GetCircle()
         {
-            Point figureCoordinates = GetFigureCoordinates(GetMaxCoordinates(figuresCanvas));
+            Point figureCoordinates = GetSpawnCoordinates();
 
             Circle circle = new(figureCoordinates.X, figureCoordinates.Y);
 
@@ -132,14 +132,13 @@ namespace FlyingFigures.View
             return point;
         }
 
-        private Point GetFigureCoordinates(Point maxPoint)
+        private Point GetSpawnCoordinates()
         {
-            int length = 100; //max length of side
+            Point maxPoint = GetMaxCoordinates(figuresCanvas);
 
-            double x = _random.Next(length, Convert.ToInt32(maxPoint.X) - length);
-            double y = _random.Next(length, Convert.ToInt32(maxPoint.Y) - length);
+            System.Drawing.Point figureCoordinates = RandomGenerations.RandomValues.GetRandomPoint(new System.Drawing.Point(Convert.ToInt32(maxPoint.X), Convert.ToInt32(maxPoint.Y)));
 
-            return new Point(x, y);
+            return new Point(figureCoordinates.X, figureCoordinates.Y);
         }
 
         private void SaveFigures_Click(object sender, RoutedEventArgs e)

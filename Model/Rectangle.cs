@@ -20,24 +20,14 @@ namespace Figures
 
         public Rectangle(double x, double y) : base(x, y)
         {
-            Random random = new();
-
-            int length = random.Next(50, 100);
-
-            XCorner = x + length;
-            YCorner = y + length / 2;          
+            XCorner = x + Length;
+            YCorner = y + Length / 2;          
         }
 
         public override List<UIElement> Draw()
         {            
             if (Pattern is null)
-            {
-                Random random = new();
-
-                int length = random.Next(50, 100);
-
-                Pattern = GeneratePattern(length);
-            }
+                Pattern = GeneratePattern(Length);
 
             return Pattern;
         }

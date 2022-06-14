@@ -1,4 +1,5 @@
 ﻿using FlyingFigures.Model.Converter;
+using RandomGenerations;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
@@ -25,16 +26,21 @@ namespace Figures
 
         public double Dx { get; set; }
         public double Dy { get; set; }
-       
+
+        public int Length { get; set; }
+
         public Figure()
         {
 
+            Length = RandomValues.GetRandomLength();
         }
 
         public Figure(double x, double y)
         {
             X = x;
             Y = y;
+
+            Length = RandomValues.GetRandomLength();
 
             Random random = new();
 
