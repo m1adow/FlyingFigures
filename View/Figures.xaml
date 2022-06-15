@@ -19,9 +19,11 @@
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.2*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="0.6*"/>
                 <RowDefinition Height="3*"/>
+                <RowDefinition Height="8*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Menu Margin="10,0,10,0">
                 <MenuItem Header="{Binding Translator.FileMenuItem}">
@@ -66,6 +68,19 @@
                       x:Name="figuresTreeView">
 
             </TreeView>
+            <DockPanel Grid.Row="3"
+                       Margin="10,10,10,0">
+                <Button Content="+"
+                        Margin="10,0,0,0"
+                        Width="50"/>
+                <Button Content="-"
+                        Margin="30,0,0,0"
+                        Width="50"/>
+            </DockPanel>
+            <StatusBar Grid.Row="4"
+                       Margin="10,10,10,0">
+                <TextBlock x:Name="coordinatesTextBlock"/>
+            </StatusBar>
         </Grid>
         <Canvas Grid.Column="1"
                 x:Name="figuresCanvas">

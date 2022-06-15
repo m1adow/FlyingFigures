@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Xml.Serialization;
 
-namespace Figures
+namespace FlyingFigures.Model
 {
     [Serializable]
     [XmlInclude(typeof(Rectangle))]
@@ -29,10 +29,13 @@ namespace Figures
 
         public int Length { get; set; }
 
+        public CollisionEvent? CollisionEvent; 
+
         public Figure()
         {
-
             Length = RandomValues.GetRandomLength();
+
+            CollisionEvent = new();
         }
 
         public Figure(double x, double y)
@@ -50,6 +53,8 @@ namespace Figures
                 Dy = random.Next(-3, 3);
             }
             while (Dx == 0 && Dy == 0);
+
+            CollisionEvent = new();
         }
 
         public abstract List<UIElement> Draw();

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 
-namespace Figures
+namespace FlyingFigures.Model
 {
     [Serializable]
     public class Circle : Figure

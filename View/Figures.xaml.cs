@@ -1,9 +1,8 @@
-﻿using Figures;
-using FlyingFigures.Localization;
+﻿using FlyingFigures.Localization;
+using FlyingFigures.Model;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.Json;
@@ -12,7 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using System.Xml.Serialization;
-using Rectangle = Figures.Rectangle;
+using Rectangle = FlyingFigures.Model.Rectangle;
 
 namespace FlyingFigures.View
 {
@@ -22,14 +21,12 @@ namespace FlyingFigures.View
     public partial class Figures : Window
     {
         private List<Figure> _figures;
-        private Random _random;
 
         public Figures()
         {
             InitializeComponent();
 
             _figures = new List<Figure>();
-            _random = new Random();
 
             Thread movement = new(new ThreadStart(() =>
             {

@@ -1,7 +1,4 @@
-﻿using Figures;
-using FlyingFigures.Localization;
-using FlyingFigures.ViewModel.Helpers;
-using System.Collections.Generic;
+﻿using FlyingFigures.ViewModel.Helpers;
 
 namespace FlyingFigures.ViewModel
 {

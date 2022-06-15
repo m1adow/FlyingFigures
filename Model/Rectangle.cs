@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Shapes;
 
-namespace Figures
+namespace FlyingFigures.Model
 {
     [Serializable]
     public class Rectangle : Figure
