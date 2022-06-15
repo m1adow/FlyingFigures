@@ -1,5 +1,6 @@
 ﻿using FlyingFigures.Localization;
 using FlyingFigures.Model;
+using FlyingFigures.Model.Events;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -79,11 +80,11 @@ namespace FlyingFigures.View
 
                 if (figure.CollisionEvents is not null)
                 {
-                    if (_figures.Any(f => f.GetHashCode() != figure.GetHashCode() && 
-                    f.X == figure.X && 
-                    f.Y == figure.Y &&
-                    f.Type == figure.Type))
-                        figure.CollisionEvents.ForEach(c => c.CollisionRegistered(figure));
+                    /*if (_figures.Any(f => f.GetHashCode() != figure.GetHashCode() 
+                    && f.Type == figure.Type
+                    && f.X + f.Length / 2 == figure.X + figure.Length / 2
+                    && f.Y + f.Length / 4 == figure.X + figure.Length / 4))
+                        figure.CollisionEvents.ForEach(c => c.CollisionRegistered(figure));*/
                 }
             }
         }
@@ -328,7 +329,7 @@ namespace FlyingFigures.View
                 figure.CollisionEvents?.RemoveAt(figure.CollisionEvents.Count - 1);
         }
 
-        private void CollisionEvent_CollisionHandler(object? sender, Figure e)
+        private void CollisionEvent_CollisionHandler(object? sender, CoordinateArgs e)
         {
             this.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
                     (ThreadStart)delegate ()
