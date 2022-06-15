@@ -1,7 +1,8 @@
 ﻿using FlyingFigures.Localization;
-using FlyingFigures.Model;
 using FlyingFigures.Model.Events;
+using FlyingFigures.Model.Figures;
 using FlyingFigures.Model.Helpers.DeserializationTools;
+using FlyingFigures.Model.Helpers.FigureCollision;
 using FlyingFigures.Model.Helpers.SerializationTools;
 using Microsoft.Win32;
 using System;
@@ -13,7 +14,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using Rectangle = FlyingFigures.Model.Rectangle;
+using Rectangle = FlyingFigures.Model.Figures.Rectangle;
 
 namespace FlyingFigures.View
 {
@@ -87,10 +88,7 @@ namespace FlyingFigures.View
 
                             if (_figures.Any(f => f.GetHashCode() != figure.GetHashCode() &&
                             f.Type == figure.Type &&
-                            f.X <= rectangle.XCorner &&
-                            f.Y <= rectangle.YCorner &&
-                            f.X + f.Length >= rectangle.X &&
-                            f.Y + f.Length / 2 >= rectangle.Y))
+                            FigureCollision.IsRectanglesCollided(f, rectangle)))
                                 figure.CollisionEvents.ForEach(c => c.CollisionRegistered(figure));
                             break;
                         case nameof(Triangle):
@@ -98,10 +96,7 @@ namespace FlyingFigures.View
 
                             if (_figures.Any(f => f.GetHashCode() != figure.GetHashCode() &&
                             f.Type == figure.Type &&
-                            f.X <= triangle.RightCorner &&
-                            f.Y <= triangle.BottomCorner &&
-                            f.X + f.Length / 2 >= triangle.X &&
-                            f.Y + f.Length >= triangle.Y))
+                            FigureCollision.IsTrianglesCollided(f, triangle)))
                                 figure.CollisionEvents.ForEach(c => c.CollisionRegistered(figure));
                             break;
                         case nameof(Circle):
@@ -109,10 +104,7 @@ namespace FlyingFigures.View
 
                             if (_figures.Any(f => f.GetHashCode() != figure.GetHashCode() &&
                             f.Type == figure.Type &&
-                            f.X <= circle.Right &&
-                            f.Y <= circle.Top &&
-                            f.X + f.Length >= circle.Right &&
-                            f.Y + f.Length >= circle.Top))
+                            FigureCollision.IsCirclesCollided(f, circle)))
                                 figure.CollisionEvents.ForEach(c => c.CollisionRegistered(figure));
                             break;
                     }

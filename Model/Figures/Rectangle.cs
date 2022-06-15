@@ -3,25 +3,25 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Shapes;
 
-namespace FlyingFigures.Model
+namespace FlyingFigures.Model.Figures
 {
     [Serializable]
-    public class Triangle : Figure
+    public class Rectangle : Figure
     {
-        public double RightCorner { get; set; }
-        public double BottomCorner { get; set; }
+        public double XCorner { get; set; }
+        public double YCorner { get; set; }
 
-        public override string Type { get; set; } = nameof(Triangle);
+        public override string Type { get; set; } = nameof(Rectangle);
 
-        public Triangle()
+        public Rectangle()
         {
 
         }
 
-        public Triangle(double x, double y) : base(x, y)
+        public Rectangle(double x, double y) : base(x, y)
         {
-            RightCorner = x + Length / 2;
-            BottomCorner = y + Length;
+            XCorner = x + Length;
+            YCorner = y + Length / 2;
         }
 
         public override List<UIElement> Draw()
@@ -34,14 +34,13 @@ namespace FlyingFigures.Model
 
         public override void Move(Point maxCoordinates)
         {
-            if (RightCorner <= 0 || RightCorner >= maxCoordinates.X)
+            if (XCorner <= 0 || XCorner >= maxCoordinates.X)
                 Dx *= -1;
-
-            if (BottomCorner <= 0 || BottomCorner >= maxCoordinates.Y)
+            if (YCorner <= 0 || YCorner >= maxCoordinates.Y)
                 Dy *= -1;
 
-            RightCorner += Dx;
-            BottomCorner += Dy;
+            XCorner += Dx;
+            YCorner += Dy;
 
             base.Move(maxCoordinates);
         }
@@ -52,18 +51,27 @@ namespace FlyingFigures.Model
             {
                 new Line()
                 {
-                    X2 = length / 2,
+                    X2 = length,
                     Stroke = GetRandomColor()
                 },
                 new Line()
                 {
-                    Y2 = length,
+                    X1 = 0,
+                    Y2 = length / 2,
                     Stroke = GetRandomColor()
                 },
                 new Line()
                 {
-                    Y1 = length,
-                    X2 = length / 2,
+                    X2 = length,
+                    Y1 = length / 2,
+                    Y2 = length / 2,
+                    Stroke = GetRandomColor()
+                },
+                new Line()
+                {
+                    X1 = length,
+                    X2 = length,
+                    Y2 = length / 2,
                     Stroke = GetRandomColor()
                 }
             };
@@ -73,7 +81,7 @@ namespace FlyingFigures.Model
 
         public override string ToString()
         {
-            return $"Triangle\n\tlength {Length}";
+            return $"Rectangle\n\tlength {Length}";
         }
     }
 }

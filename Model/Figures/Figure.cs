@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Xml.Serialization;
 
-namespace FlyingFigures.Model
+namespace FlyingFigures.Model.Figures
 {
     [Serializable]
     [XmlInclude(typeof(Rectangle))]
@@ -20,7 +20,7 @@ namespace FlyingFigures.Model
         [NonSerialized]
         protected List<UIElement>? Pattern;
         [NonSerialized]
-        public List<CollisionEvent>? CollisionEvents; 
+        public List<CollisionEvent>? CollisionEvents;
 
         public abstract string Type { get; set; }
 

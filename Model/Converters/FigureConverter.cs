@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlyingFigures.Model.Figures;
+using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 

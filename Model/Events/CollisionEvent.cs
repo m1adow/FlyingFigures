@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlyingFigures.Model.Figures;
+using System;
 
 namespace FlyingFigures.Model.Events
 {
