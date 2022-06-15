@@ -60,7 +60,7 @@ namespace FlyingFigures.View
             figuresTreeView.Items.Add(figure);
 
             _figures.Add(figure);
-        } 
+        }
 
         private void InitializeTimer()
         {
@@ -80,11 +80,42 @@ namespace FlyingFigures.View
 
                 if (figure.CollisionEvents is not null)
                 {
-                    /*if (_figures.Any(f => f.GetHashCode() != figure.GetHashCode() 
-                    && f.Type == figure.Type
-                    && f.X + f.Length / 2 == figure.X + figure.Length / 2
-                    && f.Y + f.Length / 4 == figure.X + figure.Length / 4))
-                        figure.CollisionEvents.ForEach(c => c.CollisionRegistered(figure));*/
+                    switch (figure.Type)
+                    {
+                        case nameof(Rectangle):
+                            Rectangle? rectangle = figure as Rectangle;
+
+                            if (_figures.Any(f => f.GetHashCode() != figure.GetHashCode() &&
+                            f.Type == figure.Type &&
+                            f.X <= rectangle.XCorner &&
+                            f.Y <= rectangle.YCorner &&
+                            f.X + f.Length >= rectangle.X &&
+                            f.Y + f.Length / 2 >= rectangle.Y))
+                                figure.CollisionEvents.ForEach(c => c.CollisionRegistered(figure));
+                            break;
+                        case nameof(Triangle):
+                            Triangle? triangle = figure as Triangle;
+
+                            if (_figures.Any(f => f.GetHashCode() != figure.GetHashCode() &&
+                            f.Type == figure.Type &&
+                            f.X <= triangle.RightCorner &&
+                            f.Y <= triangle.BottomCorner &&
+                            f.X + f.Length / 2 >= triangle.X &&
+                            f.Y + f.Length >= triangle.Y))
+                                figure.CollisionEvents.ForEach(c => c.CollisionRegistered(figure));
+                            break;
+                        case nameof(Circle):
+                            Circle? circle = figure as Circle;
+
+                            if (_figures.Any(f => f.GetHashCode() != figure.GetHashCode() &&
+                            f.Type == figure.Type &&
+                            f.X <= circle.Right &&
+                            f.Y <= circle.Top &&
+                            f.X + f.Length >= circle.Right &&
+                            f.Y + f.Length >= circle.Top))
+                                figure.CollisionEvents.ForEach(c => c.CollisionRegistered(figure));
+                            break;
+                    }
                 }
             }
         }
@@ -243,7 +274,7 @@ namespace FlyingFigures.View
             {
                 string json = reader.ReadToEnd();
 
-                _figures = JsonSerializer.Deserialize<List<Figure>>(json);               
+                _figures = JsonSerializer.Deserialize<List<Figure>>(json);
             }
 
             AddFiguresAfterDeserialization();
@@ -297,7 +328,7 @@ namespace FlyingFigures.View
                     figuresCanvas.Children.Add(line);
 
                 figuresTreeView.Items.Add(figure);
-            }           
+            }
         }
 
         private void AddEvent_Click(object sender, RoutedEventArgs e)

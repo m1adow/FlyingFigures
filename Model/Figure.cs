@@ -19,6 +19,8 @@ namespace FlyingFigures.Model
     {
         [NonSerialized]
         protected List<UIElement>? Pattern;
+        [NonSerialized]
+        public List<CollisionEvent>? CollisionEvents; 
 
         public abstract string Type { get; set; }
 
@@ -30,7 +32,6 @@ namespace FlyingFigures.Model
 
         public int Length { get; set; }
 
-        public List<CollisionEvent>? CollisionEvents;
 
         public Figure()
         {

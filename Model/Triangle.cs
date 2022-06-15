@@ -70,5 +70,10 @@ namespace FlyingFigures.Model
 
             return pattern;
         }
+
+        public override string ToString()
+        {
+            return $"Triangle\n\t(x; y) ({X}; {Y})\n\t\tlength {Length}";
+        }
     }
 }
