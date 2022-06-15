@@ -1,19 +1,18 @@
 ﻿using FlyingFigures.Localization;
 using FlyingFigures.Model;
 using FlyingFigures.Model.Events;
+using FlyingFigures.Model.Helpers.DeserializationTools;
+using FlyingFigures.Model.Helpers.SerializationTools;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Media;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text.Json;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using System.Xml.Serialization;
 using Rectangle = FlyingFigures.Model.Rectangle;
 
 namespace FlyingFigures.View
@@ -188,49 +187,14 @@ namespace FlyingFigures.View
             switch (format)
             {
                 case "JSON":
-                    SerializeInJson(format.ToLower());
+                    SerializationJSON.Serialize(_figures, OpenSaveFileDialog(format.ToLower()).FileName);
                     break;
                 case "XML":
-                    SerializeInXml(format.ToLower());
+                    SerializationXML.Serialize(_figures, OpenSaveFileDialog(format.ToLower()).FileName);
                     break;
                 case "BIN":
-                    SerializeInBytes(format.ToLower());
+                    SerializationBIN.Serialize(_figures, OpenSaveFileDialog(format.ToLower()).FileName);
                     break;
-            }
-        }
-
-        private void SerializeInJson(string format)
-        {
-            string json = JsonSerializer.Serialize((object)_figures, new JsonSerializerOptions()
-            {
-                WriteIndented = true,
-            });
-
-            var saveFileDialog = OpenSaveFileDialog(format);
-
-            using (var writer = new StreamWriter(saveFileDialog.FileName))
-                writer.Write(json);
-        }
-
-        private void SerializeInXml(string format)
-        {
-            var saveFileDialog = OpenSaveFileDialog(format);
-
-            XmlSerializer serializer = new(typeof(List<Figure>));
-
-            using (var writer = new StreamWriter(saveFileDialog.FileName))
-                serializer.Serialize(writer, _figures);
-        }
-
-        private void SerializeInBytes(string format)
-        {
-            var saveFileDialog = OpenSaveFileDialog(format);
-
-            using (var stream = File.Open(saveFileDialog.FileName, FileMode.Create))
-            {
-                var binaryFormatter = new BinaryFormatter();
-
-                binaryFormatter.Serialize(stream, _figures);
             }
         }
 
@@ -258,51 +222,19 @@ namespace FlyingFigures.View
             switch (format.ToUpper())
             {
                 case "JSON":
-                    DeserializeInJson(openFileDialog.FileName);
+                    DeserializationJSON.Deserialize(out _figures, openFileDialog.FileName);
                     break;
                 case "XML":
-                    DeserializeInXml(openFileDialog.FileName);
+                    DeserializationXML.Deserialize(out _figures, openFileDialog.FileName);
                     break;
                 case "BIN":
-                    DeserializeInBytes(openFileDialog.FileName);
+                    DeserializationBIN.Deserialize(out _figures, openFileDialog.FileName);
                     break;
             }
-        }
-
-        private void DeserializeInJson(string path)
-        {
-            using (var reader = new StreamReader(path))
-            {
-                string json = reader.ReadToEnd();
-
-                _figures = JsonSerializer.Deserialize<List<Figure>>(json);
-            }
 
             AddFiguresAfterDeserialization();
         }
-
-        private void DeserializeInXml(string path)
-        {
-            XmlSerializer serializer = new(typeof(List<Figure>));
-
-            using (var reader = new StreamReader(path))
-                _figures = (List<Figure>)serializer.Deserialize(reader);
-
-            AddFiguresAfterDeserialization();
-        }
-
-        private void DeserializeInBytes(string path)
-        {
-            using (var stream = File.OpenRead(path))
-            {
-                var binaryFormatter = new BinaryFormatter();
-
-                _figures = (List<Figure>)binaryFormatter.Deserialize(stream);
-            }
-
-            AddFiguresAfterDeserialization();
-        }
-
+      
         private OpenFileDialog OpenFileDialog()
         {
             OpenFileDialog openFileDialog = new();
