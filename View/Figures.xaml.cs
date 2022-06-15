@@ -4,6 +4,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.Json;
 using System.Threading;
@@ -58,7 +59,7 @@ namespace FlyingFigures.View
             figuresTreeView.Items.Add(figure);
 
             _figures.Add(figure);
-        }
+        } 
 
         private void InitializeTimer()
         {
@@ -75,6 +76,15 @@ namespace FlyingFigures.View
             {
                 figure.Move(GetMaxCoordinates(figuresCanvas));
                 MoveFigure(figure.Draw(), figure.X, figure.Y);
+
+                if (figure.CollisionEvents is not null)
+                {
+                    if (_figures.Any(f => f.GetHashCode() != figure.GetHashCode() && 
+                    f.X == figure.X && 
+                    f.Y == figure.Y &&
+                    f.Type == figure.Type))
+                        figure.CollisionEvents.ForEach(c => c.CollisionRegistered(figure));
+                }
             }
         }
 
@@ -287,6 +297,44 @@ namespace FlyingFigures.View
 
                 figuresTreeView.Items.Add(figure);
             }           
+        }
+
+        private void AddEvent_Click(object sender, RoutedEventArgs e)
+        {
+            if (figuresTreeView.SelectedItem is null)
+                return;
+
+            Figure? figure = figuresTreeView.SelectedItem as Figure;
+
+            if (figure is null)
+                return;
+
+            CollisionEvent collisionEvent = new();
+            collisionEvent.CollisionHandler += CollisionEvent_CollisionHandler;
+            figure.CollisionEvents?.Add(collisionEvent);
+        }
+
+        private void RemoveEvent_Click(object sender, RoutedEventArgs e)
+        {
+            if (figuresTreeView.SelectedItem is null)
+                return;
+
+            Figure? figure = figuresTreeView.SelectedItem as Figure;
+
+            if (figure is null)
+                return;
+
+            if (figure.CollisionEvents?.Count != 0)
+                figure.CollisionEvents?.RemoveAt(figure.CollisionEvents.Count - 1);
+        }
+
+        private void CollisionEvent_CollisionHandler(object? sender, Figure e)
+        {
+            this.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                    (ThreadStart)delegate ()
+                    {
+                        coordinatesTextBlock.Text = $"X: {e.X}\tY: {e.Y}";
+                    });
         }
     }
 }

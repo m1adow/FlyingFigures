@@ -72,10 +72,12 @@
                        Margin="10,10,10,0">
                 <Button Content="+"
                         Margin="10,0,0,0"
-                        Width="50"/>
+                        Width="50"
+                        Click="AddEvent_Click"/>
                 <Button Content="-"
                         Margin="30,0,0,0"
-                        Width="50"/>
+                        Width="50"
+                        Click="RemoveEvent_Click"/>
             </DockPanel>
             <StatusBar Grid.Row="4"
                        Margin="10,10,10,0">

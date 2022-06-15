@@ -1,9 +1,12 @@
-﻿namespace FlyingFigures.Model
+﻿using System;
+
+namespace FlyingFigures.Model
 {
     public class CollisionEvent
     {
-        public delegate void CollisionDelegate(Figure left, Figure right);
+        public event EventHandler<Figure>? CollisionHandler;
 
-        public event CollisionDelegate? CollisionHandler;
+        public void CollisionRegistered(Figure figure) 
+            => CollisionHandler?.Invoke(this, figure);
     }
 }

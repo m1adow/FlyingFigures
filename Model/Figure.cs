@@ -29,13 +29,13 @@ namespace FlyingFigures.Model
 
         public int Length { get; set; }
 
-        public CollisionEvent? CollisionEvent; 
+        public List<CollisionEvent>? CollisionEvents;
 
         public Figure()
         {
             Length = RandomValues.GetRandomLength();
 
-            CollisionEvent = new();
+            CollisionEvents = new List<CollisionEvent>();
         }
 
         public Figure(double x, double y)
@@ -54,7 +54,7 @@ namespace FlyingFigures.Model
             }
             while (Dx == 0 && Dy == 0);
 
-            CollisionEvent = new();
+            CollisionEvents = new List<CollisionEvent>();
         }
 
         public abstract List<UIElement> Draw();
