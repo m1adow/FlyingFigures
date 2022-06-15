@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.Json;
 using System.Threading;
@@ -367,6 +368,8 @@ namespace FlyingFigures.View
                     {
                         coordinatesTextBlock.Text = $"X: {e.X}\tY: {e.Y}";
                     });
+
+            SystemSounds.Beep.Play();
         }
     }
 }

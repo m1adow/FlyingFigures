@@ -62,7 +62,7 @@ namespace FlyingFigures.Model
 
         public override string ToString()
         {
-            return $"Circle\n\t(x; y) ({X}; {Y})\n\t\tlength {Length}";
+            return $"Circle\n\tlength {Length}";
         }
     }
 }

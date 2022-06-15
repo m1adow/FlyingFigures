@@ -81,7 +81,7 @@ namespace FlyingFigures.Model
 
         public override string ToString()
         {
-            return $"Rectangle\n\t(x; y) ({X}; {Y})\n\t\tlength {Length}";
+            return $"Rectangle\n\tlength {Length}";
         }
     }
 }
