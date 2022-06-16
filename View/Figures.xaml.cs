@@ -1,5 +1,6 @@
 ﻿using FlyingFigures.Localization;
 using FlyingFigures.Model.Events;
+using FlyingFigures.Model.Exceptions;
 using FlyingFigures.Model.Figures;
 using FlyingFigures.Model.Helpers.DeserializationTools;
 using FlyingFigures.Model.Helpers.FigureCollision;
@@ -53,7 +54,7 @@ namespace FlyingFigures.View
 
         private void AddFigure(Figure figure)
         {
-            MoveFigure(figure.Draw(), figure.X, figure.Y);
+            ChangeCanvasPositionOfFigure(figure.Draw(), figure.X, figure.Y);
 
             foreach (var line in figure.Draw())
                 figuresCanvas.Children.Add(line);
@@ -75,9 +76,15 @@ namespace FlyingFigures.View
         private void Timer_Tick(object? sender, EventArgs e)
         {
             foreach (var figure in _figures)
+                MoveFigure(figure);
+        }
+
+        private void MoveFigure(Figure figure)
+        {
+            try
             {
                 figure.Move(GetMaxCoordinates(figuresCanvas));
-                MoveFigure(figure.Draw(), figure.X, figure.Y);
+                ChangeCanvasPositionOfFigure(figure.Draw(), figure.X, figure.Y);
 
                 if (figure.CollisionEvents is not null)
                 {
@@ -110,9 +117,17 @@ namespace FlyingFigures.View
                     }
                 }
             }
+            catch (BehindBorderException exception)
+            {
+                Point randomCoordinations = GetRandomCoordinates();
+
+                figure.ResetFigurePosition(randomCoordinations);
+
+                LogBehindBorderException(exception);
+            }
         }
 
-        private void MoveFigure(List<UIElement> sides, double x, double y)
+        private void ChangeCanvasPositionOfFigure(List<UIElement> sides, double x, double y)
         {
             foreach (var line in sides)
             {
@@ -125,9 +140,15 @@ namespace FlyingFigures.View
             }
         }
 
+        private void LogBehindBorderException(BehindBorderException exception)
+        {
+            using (var writer = new StreamWriter($"{Environment.CurrentDirectory}\\LogChannel.txt"))
+                writer.Write($"{DateTime.Now}\n{exception.Message}");
+        }
+
         private Rectangle GetRectangle()
         {
-            Point figureCoordinates = GetSpawnCoordinates();
+            Point figureCoordinates = GetRandomCoordinates();
 
             Rectangle rectangle = new(figureCoordinates.X, figureCoordinates.Y);
 
@@ -136,7 +157,7 @@ namespace FlyingFigures.View
 
         private Triangle GetTriangle()
         {
-            Point figureCoordinates = GetSpawnCoordinates();
+            Point figureCoordinates = GetRandomCoordinates();
 
             Triangle triangle = new(figureCoordinates.X, figureCoordinates.Y);
 
@@ -145,7 +166,7 @@ namespace FlyingFigures.View
 
         private Circle GetCircle()
         {
-            Point figureCoordinates = GetSpawnCoordinates();
+            Point figureCoordinates = GetRandomCoordinates();
 
             Circle circle = new(figureCoordinates.X, figureCoordinates.Y);
 
@@ -163,7 +184,7 @@ namespace FlyingFigures.View
             return point;
         }
 
-        private Point GetSpawnCoordinates()
+        private Point GetRandomCoordinates()
         {
             Point maxPoint = GetMaxCoordinates(figuresCanvas);
 
@@ -226,7 +247,7 @@ namespace FlyingFigures.View
 
             AddFiguresAfterDeserialization();
         }
-      
+
         private OpenFileDialog OpenFileDialog()
         {
             OpenFileDialog openFileDialog = new();

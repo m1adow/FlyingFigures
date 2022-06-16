@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlyingFigures.Model.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Shapes;
@@ -34,6 +35,9 @@ namespace FlyingFigures.Model.Figures
 
         public override void Move(Point maxCoordinates)
         {
+            if (XCorner < 0 - Length / 2 || YCorner < 0 - Length / 2 || XCorner > maxCoordinates.X + Length / 2 || YCorner > maxCoordinates.Y + Length / 2)
+                throw new BehindBorderException($"Your figure was behind border.\nFigure: {Type};\n\t(x;y) - ({X};{Y})");
+
             if (XCorner <= 0 || XCorner >= maxCoordinates.X)
                 Dx *= -1;
             if (YCorner <= 0 || YCorner >= maxCoordinates.Y)
@@ -77,6 +81,14 @@ namespace FlyingFigures.Model.Figures
             };
 
             return pattern;
+        }
+
+        public override void ResetFigurePosition(Point coordinates)
+        {           
+            base.ResetFigurePosition(coordinates);
+
+            XCorner = coordinates.X + Length;
+            YCorner = coordinates.Y + Length / 2;
         }
 
         public override string ToString()

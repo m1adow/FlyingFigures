@@ -1,5 +1,6 @@
 ﻿using FlyingFigures.Model.Converter;
 using FlyingFigures.Model.Events;
+using FlyingFigures.Model.Exceptions;
 using RandomGenerations;
 using System;
 using System.Collections.Generic;
@@ -63,6 +64,9 @@ namespace FlyingFigures.Model.Figures
 
         public virtual void Move(Point maxCoordinates)
         {
+            if (X < 0 - Length / 2 || Y < 0 - Length / 2 || X > maxCoordinates.X + Length / 2 || Y > maxCoordinates.Y + Length / 2)
+                throw new BehindBorderException($"Your figure was behind border.\nFigure: {Type};\n\t(x;y) - ({X};{Y})");
+
             if (X <= 0 || X >= maxCoordinates.X)
                 Dx *= -1;
             if (Y <= 0 || Y >= maxCoordinates.Y)
@@ -77,6 +81,12 @@ namespace FlyingFigures.Model.Figures
             Random random = new();
 
             return new SolidColorBrush(Color.FromRgb((byte)random.Next(1, 255), (byte)random.Next(1, 255), (byte)random.Next(1, 255)));
+        }
+
+        public virtual void ResetFigurePosition(Point coordinates)
+        {
+            X = coordinates.X;
+            Y = coordinates.Y;
         }
     }
 }
