@@ -36,7 +36,7 @@ namespace FlyingFigures.Model.Figures
         public override void Move(Point maxCoordinates)
         {
             if (RightCorner < 0 - Length / 2 || BottomCorner < 0 - Length / 2 || RightCorner > maxCoordinates.X + Length / 2 || BottomCorner > maxCoordinates.Y + Length / 2)
-                throw new BehindBorderException($"Your figure was behind border.\nFigure: {Type};\n\t(x;y) - ({X};{Y})");
+                throw new BehindBorderException($"Your figure was behind border.\n\tFigure: {Type};\n\t\t(x;y) - ({X};{Y})");
 
             if (RightCorner <= 0 || RightCorner >= maxCoordinates.X)
                 Dx *= -1;

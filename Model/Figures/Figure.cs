@@ -65,7 +65,7 @@ namespace FlyingFigures.Model.Figures
         public virtual void Move(Point maxCoordinates)
         {
             if (X < 0 - Length / 2 || Y < 0 - Length / 2 || X > maxCoordinates.X + Length / 2 || Y > maxCoordinates.Y + Length / 2)
-                throw new BehindBorderException($"Your figure was behind border.\nFigure: {Type};\n\t(x;y) - ({X};{Y})");
+                throw new BehindBorderException($"Your figure was behind border.\n\tFigure: {Type};\n\t\t(x;y) - ({X};{Y})");
 
             if (X <= 0 || X >= maxCoordinates.X)
                 Dx *= -1;
