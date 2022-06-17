@@ -32,12 +32,21 @@ namespace FlyingFigures.View
 
             _figures = new List<Figure>();
 
+            DispatcherTimer timer = InitializeTimer();
+
             Thread movement = new(new ThreadStart(() =>
             {
-                InitializeTimer();
+                timer.Tick += Timer_Move;
                 Dispatcher.Run();
             }));
             movement.Start();
+
+            Thread drawing = new(new ThreadStart(() =>
+            {
+                timer.Tick += Timer_Draw;
+                Dispatcher.Run();
+            }));
+            drawing.Start();
         }
 
         private void CreateFigure_Click(object sender, RoutedEventArgs e)
@@ -64,16 +73,17 @@ namespace FlyingFigures.View
             _figures.Add(figure);
         }
 
-        private void InitializeTimer()
+        private DispatcherTimer InitializeTimer()
         {
             DispatcherTimer timer = new();
 
-            timer.Tick += Timer_Tick;
-            timer.Interval = TimeSpan.FromSeconds(0.01);
+            timer.Interval = TimeSpan.FromSeconds(0.001);
             timer.Start();
+
+            return timer;
         }
 
-        private void Timer_Tick(object? sender, EventArgs e)
+        private void Timer_Move(object? sender, EventArgs e)
         {
             foreach (var figure in _figures)
                 MoveFigure(figure);
@@ -83,8 +93,7 @@ namespace FlyingFigures.View
         {
             try
             {
-                figure.Move(GetMaxCoordinates(figuresCanvas));
-                ChangeCanvasPositionOfFigure(figure.Draw(), figure.X, figure.Y);
+                figure.Move(GetMaxCoordinates(figuresCanvas));                
 
                 if (figure.CollisionEvents is not null)
                 {
@@ -127,6 +136,23 @@ namespace FlyingFigures.View
             }
         }
 
+        private void LogBehindBorderException(BehindBorderException exception)
+        {
+            using (var writer = new StreamWriter($"{Environment.CurrentDirectory}\\LogChannel.txt"))
+                writer.Write($"{DateTime.Now}\n{exception.Message}");
+        }
+
+        private void Timer_Draw(object? sender, EventArgs e)
+        {
+            foreach (var figure in _figures)
+                DrawFigure(figure);
+        }
+
+        private void DrawFigure(Figure figure)
+        {
+            ChangeCanvasPositionOfFigure(figure.Draw(), figure.X, figure.Y);
+        }
+
         private void ChangeCanvasPositionOfFigure(List<UIElement> sides, double x, double y)
         {
             foreach (var line in sides)
@@ -138,12 +164,6 @@ namespace FlyingFigures.View
                         Canvas.SetTop(line, y);
                     });
             }
-        }
-
-        private void LogBehindBorderException(BehindBorderException exception)
-        {
-            using (var writer = new StreamWriter($"{Environment.CurrentDirectory}\\LogChannel.txt"))
-                writer.Write($"{DateTime.Now}\n{exception.Message}");
         }
 
         private Rectangle GetRectangle()

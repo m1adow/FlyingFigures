@@ -22,6 +22,8 @@ namespace FlyingFigures.Model.Figures
         protected List<UIElement>? Pattern;
         [NonSerialized]
         public List<CollisionEvent>? CollisionEvents;
+        [NonSerialized]
+        private readonly object _movingLock = new object();
 
         public abstract string Type { get; set; }
 
@@ -37,7 +39,6 @@ namespace FlyingFigures.Model.Figures
         public Figure()
         {
             Length = RandomValues.GetRandomLength();
-
             CollisionEvents = new List<CollisionEvent>();
         }
 
@@ -47,6 +48,7 @@ namespace FlyingFigures.Model.Figures
             Y = y;
 
             Length = RandomValues.GetRandomLength();
+            CollisionEvents = new List<CollisionEvent>();
 
             Random random = new();
 
@@ -57,7 +59,6 @@ namespace FlyingFigures.Model.Figures
             }
             while (Dx == 0 && Dy == 0);
 
-            CollisionEvents = new List<CollisionEvent>();
         }
 
         public abstract List<UIElement> Draw();
@@ -65,7 +66,7 @@ namespace FlyingFigures.Model.Figures
         public virtual void Move(Point maxCoordinates)
         {
             if (X < 0 - Length / 2 || Y < 0 - Length / 2 || X > maxCoordinates.X + Length / 2 || Y > maxCoordinates.Y + Length / 2)
-                throw new BehindBorderException($"Your figure was behind border.\n\tFigure: {Type};\n\t\t(x;y) - ({X};{Y})");
+                throw new BehindBorderException($"Your figure was behind the border.\n\tFigure: {Type};\n\t\t(x;y) - ({X};{Y})");
 
             if (X <= 0 || X >= maxCoordinates.X)
                 Dx *= -1;
