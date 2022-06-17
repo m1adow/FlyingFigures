@@ -34,19 +34,22 @@ namespace FlyingFigures.Model.Figures
 
         public override void Move(Point maxCoordinates)
         {
-            if (Right < 0 - Length / 2 || Top < 0 - Length / 2 || Right > maxCoordinates.X + Length / 2 || Top > maxCoordinates.Y + Length / 2)
-                throw new BehindBorderException($"Your figure was behind the border.\n\tFigure: {Type};\n\t\t(x;y) - ({X};{Y})");
+            lock (MovingLock)
+            {
+                if (Right < 0 - Length / 2 || Top < 0 - Length / 2 || Right > maxCoordinates.X + Length / 2 || Top > maxCoordinates.Y + Length / 2)
+                    throw new BehindBorderException($"Your figure was behind the border.\n\tFigure: {Type};\n\t\t(x;y) - ({X};{Y})");
 
-            if (Right <= 0 || Right >= maxCoordinates.X)
-                Dx *= -1;
+                if (Right <= 0 || Right >= maxCoordinates.X)
+                    Dx *= -1;
 
-            if (Top <= 0 || Top >= maxCoordinates.Y)
-                Dy *= -1;
+                if (Top <= 0 || Top >= maxCoordinates.Y)
+                    Dy *= -1;
 
-            Right += Dx;
-            Top += Dy;
+                Right += Dx;
+                Top += Dy;
 
-            base.Move(maxCoordinates);
+                base.Move(maxCoordinates);
+            }
         }
 
         private List<UIElement> GeneratePattern(int radius)

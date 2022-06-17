@@ -23,7 +23,7 @@ namespace FlyingFigures.Model.Figures
         [NonSerialized]
         public List<CollisionEvent>? CollisionEvents;
         [NonSerialized]
-        private readonly object _movingLock = new object();
+        protected readonly object MovingLock;
 
         public abstract string Type { get; set; }
 
@@ -40,6 +40,7 @@ namespace FlyingFigures.Model.Figures
         {
             Length = RandomValues.GetRandomLength();
             CollisionEvents = new List<CollisionEvent>();
+            MovingLock = new object();
         }
 
         public Figure(double x, double y)
@@ -49,6 +50,7 @@ namespace FlyingFigures.Model.Figures
 
             Length = RandomValues.GetRandomLength();
             CollisionEvents = new List<CollisionEvent>();
+            MovingLock = new object();
 
             Random random = new();
 
@@ -58,23 +60,25 @@ namespace FlyingFigures.Model.Figures
                 Dy = random.Next(-3, 3);
             }
             while (Dx == 0 && Dy == 0);
-
         }
 
         public abstract List<UIElement> Draw();
 
         public virtual void Move(Point maxCoordinates)
         {
-            if (X < 0 - Length / 2 || Y < 0 - Length / 2 || X > maxCoordinates.X + Length / 2 || Y > maxCoordinates.Y + Length / 2)
-                throw new BehindBorderException($"Your figure was behind the border.\n\tFigure: {Type};\n\t\t(x;y) - ({X};{Y})");
+            lock (MovingLock)
+            {
+                if (X < 0 - Length / 2 || Y < 0 - Length / 2 || X > maxCoordinates.X + Length / 2 || Y > maxCoordinates.Y + Length / 2)
+                    throw new BehindBorderException($"Your figure was behind the border.\n\tFigure: {Type};\n\t\t(x;y) - ({X};{Y})");
 
-            if (X <= 0 || X >= maxCoordinates.X)
-                Dx *= -1;
-            if (Y <= 0 || Y >= maxCoordinates.Y)
-                Dy *= -1;
+                if (X <= 0 || X >= maxCoordinates.X)
+                    Dx *= -1;
+                if (Y <= 0 || Y >= maxCoordinates.Y)
+                    Dy *= -1;
 
-            X += Dx;
-            Y += Dy;
+                X += Dx;
+                Y += Dy;
+            }
         }
 
         public virtual SolidColorBrush GetRandomColor()

@@ -32,20 +32,22 @@ namespace FlyingFigures.View
 
             _figures = new List<Figure>();
 
-            DispatcherTimer timer = InitializeTimer();
-
+            
             Thread movement = new(new ThreadStart(() =>
             {
+                DispatcherTimer timer = InitializeTimer();
                 timer.Tick += Timer_Move;
                 Dispatcher.Run();
             }));
-            movement.Start();
 
             Thread drawing = new(new ThreadStart(() =>
             {
+                DispatcherTimer timer = InitializeTimer();
                 timer.Tick += Timer_Draw;
                 Dispatcher.Run();
             }));
+
+            movement.Start();
             drawing.Start();
         }
 
@@ -93,7 +95,7 @@ namespace FlyingFigures.View
         {
             try
             {
-                figure.Move(GetMaxCoordinates(figuresCanvas));                
+                figure.Move(GetMaxCoordinates(figuresCanvas));
 
                 if (figure.CollisionEvents is not null)
                 {
